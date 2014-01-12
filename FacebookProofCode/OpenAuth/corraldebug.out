@@ -1,0 +1,132 @@
+Running transformation pass 1: Rewriting asserts
+Running transformation pass 2: Rewriting calls
+Running transformation pass 3: Pruning program
+Running transformation pass 4: SequentialInstrumentation
+Verifying program while tracking: {assertsPassed}
+Running transformation pass 5: Variable Slicing
+Running transformation pass 6: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr
+  [0.3062055 s]  
+Errors
+1 counterexamples.
+Program has a potential bug: Running transformation pass 7: Variable Slicing
+Running transformation pass 8: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr_trace_1
+  [0.0810534 s]  
+Correct
+0 counterexamples.
+False bug
+Running transformation pass 9: Variable Slicing
+Running transformation pass 10: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr_trace_1
+  [0.0544654 s]  
+Correct
+0 counterexamples.
+Running transformation pass 11: Variable Slicing
+  [0.185123 s]  
+Verifying program while tracking: {assertsPassed, F$Global.canonicalRequestResponse.status}
+Running transformation pass 12: Variable Slicing
+Running transformation pass 13: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr
+  [0.0690459 s]  
+Errors
+1 counterexamples.
+Program has a potential bug: Running transformation pass 14: Variable Slicing
+Running transformation pass 15: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr_trace_1
+  [0.0940623 s]  
+Correct
+0 counterexamples.
+False bug
+Running transformation pass 16: Variable Slicing
+Running transformation pass 17: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr_trace_1
+  [0.067044 s]  
+Correct
+0 counterexamples.
+Running transformation pass 18: Variable Slicing
+  [0.1343904 s]  
+Verifying program while tracking: {assertsPassed, F$Global.canonicalRequestResponse.status, F$Global.OPAssertion.isSuccess}
+Running transformation pass 19: Variable Slicing
+Running transformation pass 20: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr
+  [0.0700445 s]  
+Errors
+1 counterexamples.
+Program has a potential bug: Running transformation pass 21: Variable Slicing
+Running transformation pass 22: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr_trace_1
+  [0.0760503 s]  
+Correct
+0 counterexamples.
+False bug
+Running transformation pass 23: Variable Slicing
+Running transformation pass 24: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr_trace_1
+  [0.0740489 s]  
+Correct
+0 counterexamples.
+Running transformation pass 25: Variable Slicing
+  [0.2141433 s]  
+Verifying program while tracking: {assertsPassed, F$Global.canonicalRequestResponse.status, F$Global.OPAssertion.isSuccess, F$FBGlobalState.client_id, F$DotNetOpenAuth.AspNet.Clients.FacebookClient1.appId, F$Global.canonicalRequestResponse.client_id, F$Global.RPStates.rpid, F$Global.OPAssertion.rpid, $Alloc, F$RPGlobalState.appId}
+Running transformation pass 26: Variable Slicing
+Running transformation pass 27: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr
+  [0.0733112 s]  
+Errors
+1 counterexamples.
+Program has a potential bug: Running transformation pass 28: Variable Slicing
+Running transformation pass 29: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr_trace_1
+  [0.0845633 s]  
+Correct
+0 counterexamples.
+False bug
+Running transformation pass 30: Variable Slicing
+Running transformation pass 31: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr_trace_1
+  [0.0630407 s]  
+Correct
+0 counterexamples.
+Running transformation pass 32: Variable Slicing
+  [0.1861251 s]  
+Verifying program while tracking: {assertsPassed, F$Global.canonicalRequestResponse.status, F$Global.OPAssertion.isSuccess, F$FBGlobalState.client_id, F$DotNetOpenAuth.AspNet.Clients.FacebookClient1.appId, F$Global.canonicalRequestResponse.client_id, F$Global.RPStates.rpid, F$Global.OPAssertion.rpid, $Alloc, F$RPGlobalState.appId, F$Global.OPAssertion.return_url, F$Global.RPStates.domain, F$RPGlobalState.return_uri, F$Global.canonicalRequestResponse.redirect_url, F$FBGlobalState.return_url, F$System.Uri._AbsoluteUri}
+Running transformation pass 33: Variable Slicing
+Running transformation pass 34: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr
+  [0.0860576 s]  
+Errors
+1 counterexamples.
+Program has a potential bug: Running transformation pass 35: Variable Slicing
+Running transformation pass 36: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr_trace_1
+  [0.0660454 s]  
+Correct
+0 counterexamples.
+False bug
+Running transformation pass 37: Variable Slicing
+Running transformation pass 38: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr_trace_1
+  [0.0690483 s]  
+Correct
+0 counterexamples.
+Running transformation pass 39: Variable Slicing
+  [0.1490994 s]  
+Verifying program while tracking: {assertsPassed, F$Global.canonicalRequestResponse.status, F$Global.OPAssertion.isSuccess, F$FBGlobalState.client_id, F$DotNetOpenAuth.AspNet.Clients.FacebookClient1.appId, F$Global.canonicalRequestResponse.client_id, F$Global.RPStates.rpid, F$Global.OPAssertion.rpid, $Alloc, F$RPGlobalState.appId, F$Global.OPAssertion.return_url, F$Global.RPStates.domain, F$RPGlobalState.return_uri, F$Global.canonicalRequestResponse.redirect_url, F$FBGlobalState.return_url, F$System.Uri._AbsoluteUri, F$FBGlobalState.access_token, F$Global.OPAssertion.uid, F$Global.canonicalRequestResponse.token, F$Global.RPStates.uid}
+Running transformation pass 40: Variable Slicing
+Running transformation pass 41: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr
+  [0.0880589 s]  
+Correct
+0 counterexamples.
+Program has no bugs
+
+Boogie verification time: 2.29 s
+Time spent reading-writing programs: 1.26 s
+
+Time spent checking a program (6): 1.50 s
+Time spent checking a path (15): 2.71 s
+
+Number of procedures inlined: 37
+Number of variables tracked: 20
+Total Time: 5.209596 s

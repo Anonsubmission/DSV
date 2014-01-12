@@ -1,0 +1,5 @@
+sql/debug
+sql/release
+*.dbmdl
+*.scmp
+*.publish.xml

@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFile)</MSBuildAllProjects>
+	</PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<RootNamespace>DotNetOpenAuth</RootNamespace>
+		<FileAlignment>512</FileAlignment>
+		<TargetFrameworkProfile />
+		<DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
+		<StandardCopyright>
+Copyright (c) 2012, Outercurve Foundation. All rights reserved.
+Code licensed under the Ms-PL License:
+http://opensource.org/licenses/ms-pl.html
+		</StandardCopyright>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+
+		<CodeAnalysisRules />
+		<CodeAnalysisRuleSet>$(ProjectRoot)src\DotNetOpenAuth.ruleset</CodeAnalysisRuleSet>
+		<CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+		<CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>full</DebugType>
+		<Optimize>false</Optimize>
+		<DefineConstants>DEBUG;TRACE</DefineConstants>
+		<AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+		<RunCodeAnalysis>false</RunCodeAnalysis>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+		<DebugType>pdbonly</DebugType>
+		<Optimize>true</Optimize>
+		<DefineConstants>TRACE</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)' == 'CodeAnalysis' ">
+		<DebugSymbols>true</DebugSymbols>
+		<RunCodeAnalysis>true</RunCodeAnalysis>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="$(ProjectRoot)src\GlobalSuppressions.cs">
+			<Link>GlobalSuppressions.cs</Link>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="System" />
+		<Reference Include="System.Security" />
+		<Reference Include="System.configuration" />
+		<Reference Include="System.Core">
+			<RequiredTargetFramework>3.5</RequiredTargetFramework>
+		</Reference>
+		<Reference Include="System.Data" />
+		<Reference Include="System.Drawing" />
+		<Reference Include="System.IdentityModel">
+			<RequiredTargetFramework>3.0</RequiredTargetFramework>
+		</Reference>
+		<Reference Include="System.IdentityModel.Selectors">
+			<RequiredTargetFramework>4.0</RequiredTargetFramework>
+		</Reference>
+		<Reference Include="System.Runtime.Serialization">
+			<RequiredTargetFramework>3.0</RequiredTargetFramework>
+		</Reference>
+		<Reference Include="System.ServiceModel">
+			<RequiredTargetFramework>3.0</RequiredTargetFramework>
+		</Reference>
+		<Reference Include="System.ServiceModel.Web">
+			<RequiredTargetFramework>3.5</RequiredTargetFramework>
+		</Reference>
+		<Reference Include="System.Web" />
+		<Reference Include="System.Web.Abstractions">
+			<RequiredTargetFramework>3.5</RequiredTargetFramework>
+		</Reference>
+		<Reference Include="System.Web.Extensions">
+			<RequiredTargetFramework>3.5</RequiredTargetFramework>
+		</Reference>
+		<Reference Include="System.Web.Extensions.Design">
+			<RequiredTargetFramework>3.5</RequiredTargetFramework>
+		</Reference>
+		<Reference Include="System.Web.Routing">
+			<RequiredTargetFramework>3.5</RequiredTargetFramework>
+		</Reference>
+		<Reference Include="System.Windows.Forms" />
+		<Reference Include="System.XML" />
+		<Reference Include="System.Xml.Linq">
+			<RequiredTargetFramework>3.5</RequiredTargetFramework>
+		</Reference>
+		<Reference Include="System.ComponentModel.DataAnnotations">
+			<RequiredTargetFramework>3.5</RequiredTargetFramework>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="System.Xaml" />
+	</ItemGroup>
+</Project>

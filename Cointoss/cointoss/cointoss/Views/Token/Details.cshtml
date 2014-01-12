@@ -1,0 +1,29 @@
+﻿@model cointoss.Models.Token
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Token</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.OAuthToken)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OAuthToken)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.EffectiveResult)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EffectiveResult)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

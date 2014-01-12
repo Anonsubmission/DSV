@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>$identity$</id>
+		<version>$version$</version>
+		<title>DotNetOpenAuth OpenID Provider</title>
+		<authors>Andrew Arnott</authors>
+		<owners>Outercurve Foundation</owners>
+		<projectUrl>http://www.dotnetopenauth.net/</projectUrl>
+		<iconUrl>https://github.com/AArnott/dotnetopenid/raw/v3.4/doc/logo/dnoa-logo_32x32.png</iconUrl>
+		<licenseUrl>http://www.opensource.org/licenses/ms-pl.html</licenseUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<summary>Add OpenID 1.1/2.0 Provider authentication functionality to a web application programmatically.</summary>
+		<description>
+			Allow your customers to take their identities from your site with them as they visit other sites that accept
+			OpenID as relying parties.
+			Set up single-sign-on solutions within your organization using a standards-based, accepted protocol for
+			authentication delegation.
+		</description>
+		<dependencies>
+			<dependency id="DotNetOpenAuth.OpenId.Core" version="[$version$]" />
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="$OutputPath45$signed\$identity$.dll" target="lib\net45-full\" />
+		<file src="$OutputPath45$$identity$.pdb" target="lib\net45-full\" />
+		<file src="$OutputPath45$$identity$.xml" target="lib\net45-full\" />
+
+		<file src="content\OpenId.Provider\web.config.transform" target="content\web.config.transform" />
+
+		<file src="..\src\$Identity$\**\*.cs" target="src" exclude="..\src\$Identity$\obj\**" />
+		<file src="$GeneratedAssemblyInfoSourceFile$" target="src" />
+	</files>
+</package>

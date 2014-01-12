@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "caas", "caas\caas.csproj", "{887DD641-CB0D-4A1E-8CCA-8CDD2AA60DBC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{887DD641-CB0D-4A1E-8CCA-8CDD2AA60DBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{887DD641-CB0D-4A1E-8CCA-8CDD2AA60DBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{887DD641-CB0D-4A1E-8CCA-8CDD2AA60DBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{887DD641-CB0D-4A1E-8CCA-8CDD2AA60DBC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

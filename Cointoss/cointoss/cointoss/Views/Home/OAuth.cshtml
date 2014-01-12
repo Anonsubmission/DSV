@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "OAuth";
+}
+
+<h2>OAuth</h2>
+
+<div>
+    Do you want to grant CoinTosser permission to see your payment? @ViewBag.error
+
+    <input type="button" value="Grant" onclick="location.href = '@ViewBag.redirUri'" />
+
+</div>

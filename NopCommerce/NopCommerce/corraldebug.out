@@ -1,0 +1,22 @@
+Running transformation pass 1: Rewriting asserts
+Running transformation pass 2: Rewriting calls
+Running transformation pass 3: Pruning program
+Running transformation pass 4: SequentialInstrumentation
+Verifying program while tracking: {assertsPassed, F$NopSolutions.NopCommerce.Web.AmazonSimplePayReturn1.Response, F$NopSolutions.NopCommerce.Web.AmazonSimplePayReturn1.Request, $Alloc, F$GlobalState.order, F$Global.orderRecord.id, F$Global.canonicalRequestResponse.orderID, F$Global.orderRecord.status, F$NopSolutions.NopCommerce.Payment.Methods.Amazon.CaaS.p, F$NopSolutions.NopCommerce.Payment.Methods.Amazon.CaaS.caas, F$NopSolutions.NopCommerce.Payment.Methods.Amazon.caas_state.payments, F$GlobalState.witness, $ArrayContents, F$NopSolutions.NopCommerce.Payment.Methods.Amazon.payment_record.gross, F$NopSolutions.NopCommerce.Payment.Methods.Amazon.payment_record.orderID, F$NopSolutions.NopCommerce.Payment.Methods.Amazon.payment_record.status, F$NopSolutions.NopCommerce.Payment.Methods.Amazon.payment_record.payee, F$GlobalState.tstore, F$merchant_state.orders, F$Global.canonicalRequestResponse.gross, F$Global.orderRecord.gross, F$Global.canonicalRequestResponse.status, F$Global.canonicalRequestResponse.payee, F$Global.canonicalRequestResponse.signer, F$Global.canonicalRequestResponse.MerchantReturnURL, F$GlobalState.CaaS_gross_proxy, F$System.Decimal._dummy, F$GlobalState.MerchantPaymentEmail, F$GlobalState.CaaS_email_proxy, F$PoirotMain.p, F$PoirotMain.$$c__DisplayClass1.amazon, F$PoirotMain.$$c__DisplayClass1.req_finish, F$Global.canonicalRequestResponse.witness, F$merchant_state.myDomain, F$Global.RemotePostProxy.req, F$Global.RemotePostProxy.Method, F$Global.RemotePostProxy.Params, F$NopSolutions.NopCommerce.Payment.Methods.Amazon.AmazonHelper.SIGNATURE_VERSION_KEYNAME, F$NopSolutions.NopCommerce.Payment.Methods.Amazon.AmazonHelper.SIGNATURE_VERSION_2, F$NopSolutions.NopCommerce.Payment.Methods.Amazon.AmazonHelper.SIGNATURE_METHOD_KEYNAME, F$NopSolutions.NopCommerce.Payment.Methods.Amazon.AmazonHelper.HMAC_SHA256_ALGORITHM, F$NopSolutions.NopCommerce.Payment.Methods.Amazon.AmazonHelper.SIGNATURE_KEYNAME, F$NopSolutions.NopCommerce.BusinessLogic.Orders.Order._id, F$NopSolutions.NopCommerce.BusinessLogic.Orders.Order._total}
+Running transformation pass 5: Variable Slicing
+Running transformation pass 6: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr
+  [1.5059992 s]  
+Correct
+0 counterexamples.
+Program has no bugs
+
+Boogie verification time: 1.51 s
+Time spent reading-writing programs: 1.31 s
+
+Time spent checking a program (1): 2.14 s
+Time spent checking a path (0): 0.00 s
+
+Number of procedures inlined: 52
+Number of variables tracked: 44
+Total Time: 6.1320696 s

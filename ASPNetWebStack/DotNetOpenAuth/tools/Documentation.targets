@@ -1,0 +1,19 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<NetfxVer>2.0</NetfxVer>
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+		<ProjectRoot Condition="'$(ProjectRoot)' == ''">$(MSBuildProjectDirectory)\..\..\</ProjectRoot>
+		<OutputAssembly>DotNetOpenAuth</OutputAssembly>
+		<OutputAssemblyFile>$(ILMergeOutputAssembly)</OutputAssemblyFile>
+		<DocOutputPath>$(ProjectRoot)doc\</DocOutputPath>
+		<DocumentationFile>$(ILMergeOutputXmlDocs)</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<MRefDependencies Include="$(ProjectRoot)lib\log4net.dll" />
+		<MRefDependencies Include="$(ProjectRoot)lib\System.Web.Mvc.dll" />
+	</ItemGroup>
+
+	<Import Project="$(ProjectRoot)Tools\sandcastle.targets" />
+
+</Project>

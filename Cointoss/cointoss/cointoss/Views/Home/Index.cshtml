@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<h2>Welcome to Gambling site</h2>
+
+@if (ViewBag.result != null && ViewBag.result == ViewBag.guess)
+{
+    <div>
+        <h2>You win $@ViewBag.bet!!</h2>
+
+        The result is @ViewBag.result and your bet is @ViewBag.bet your guess is @ViewBag.guess
+    </div>
+
+}else if(ViewBag.result != null && ViewBag.result != ViewBag.guess){
+    <div>
+        <h2>You lose $@ViewBag.bet!</h2>
+        The result is @ViewBag.result and your bet is @ViewBag.bet your guess is @ViewBag.guess
+    </div>
+}else{
+    
+    <div id="@ViewBag.test">
+        Testing testing @ViewBag.test
+    </div>
+    
+    <form action="/Home/SimplePayReq" method="post">
+        <table>
+            <tr>
+                <td>Enter $ amount:</td>
+                <td><input id="amount" type="text" name="amount" /></td>
+            </tr>
+        </table>
+
+        <select id="flip" name="flip">
+
+	    <option value="tail">Tail</option>
+
+	    <option value="head">Head</option>
+
+	    
+	    </select>
+
+        <input type="submit" value="Buy" />
+    </form>
+}

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>$identity$</id>
+		<version>$oauth2version$</version>
+		<title>DotNetOpenAuth OAuth 2.0 Client</title>
+		<authors>Andrew Arnott</authors>
+		<owners>Outercurve Foundation</owners>
+		<projectUrl>http://www.dotnetopenauth.net/</projectUrl>
+		<iconUrl>https://github.com/AArnott/dotnetopenid/raw/v3.4/doc/logo/dnoa-logo_32x32.png</iconUrl>
+		<licenseUrl>http://www.opensource.org/licenses/ms-pl.html</licenseUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<summary>Add an OAuth 2.0 Client role to an ASP.NET web application, allowing it to make authorized calls to its visitors' protected data on other resource servers.</summary>
+		<description>
+			Improve usability, reliability, conversion rates and security simultaneously by simply asking the user for permission to access their
+			data on 3rd party services rather than asking for their password.
+		</description>
+		<dependencies>
+			<dependency id="DotNetOpenAuth.OAuth2.ClientAuthorization" version="[$oauth2version$]" />
+			<dependency id="Microsoft.AspNet.WebApi.Client" version="[4.0.20710.0,5.0)" />
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="$OutputPath45$signed\$identity$.dll" target="lib\net45-full" />
+		<file src="$OutputPath45$$identity$.pdb" target="lib\net45-full" />
+		<file src="$OutputPath45$$identity$.xml" target="lib\net45-full" />
+
+		<file src="..\src\$Identity$\**\*.cs" target="src" exclude="..\src\$Identity$\obj\**" />
+		<file src="$GeneratedAssemblyInfoSourceFile$" target="src" />
+	</files>
+</package>

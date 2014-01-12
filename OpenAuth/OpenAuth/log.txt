@@ -1,0 +1,81 @@
+Microsoft (R) Visual C# Compiler version 4.0.30319.17929
+for Microsoft (R) .NET Framework 4.5
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+stubs.cs(138,49): warning CS0436: The type 'DotNetOpenAuth.Messaging.IProtocolMessage' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'DotNetOpenAuth.Messaging.IProtocolMessage' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\bin\Debug\DotNetOpenAuth.Core.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(113,22): (Location of symbol related to previous warning)
+bin\Debug\DotNetOpenAuth.Core.dll: (Location of symbol related to previous warning)
+stubs.cs(171,29): warning CS0436: The type 'DotNetOpenAuth.Messaging.IDirectedProtocolMessage' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'DotNetOpenAuth.Messaging.IDirectedProtocolMessage' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\bin\Debug\DotNetOpenAuth.Core.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(138,22): (Location of symbol related to previous warning)
+bin\Debug\DotNetOpenAuth.Core.dll: (Location of symbol related to previous warning)
+stubs.cs(269,46): warning CS0436: The type 'DotNetOpenAuth.OpenId.Messages.IndirectSignedResponse' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'DotNetOpenAuth.OpenId.Messages.IndirectSignedResponse' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\bin\Debug\DotNetOpenAuth.OpenId.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(219,23): (Location of symbol related to previous warning)
+bin\Debug\DotNetOpenAuth.OpenId.dll: (Location of symbol related to previous warning)
+stubs.cs(17,34): warning CS0436: The type 'System.Uri' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'System.Uri' in 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(6,16): (Location of symbol related to previous warning)
+c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll: (Location of symbol related to previous warning)
+stubs.cs(17,43): warning CS0436: The type 'System.Uri' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'System.Uri' in 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(6,16): (Location of symbol related to previous warning)
+c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll: (Location of symbol related to previous warning)
+stubs.cs(26,40): warning CS0436: The type 'System.Uri' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'System.Uri' in 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(6,16): (Location of symbol related to previous warning)
+c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll: (Location of symbol related to previous warning)
+stubs.cs(26,50): warning CS0436: The type 'System.Uri' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'System.Uri' in 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(6,16): (Location of symbol related to previous warning)
+c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll: (Location of symbol related to previous warning)
+stubs.cs(6,16): warning CS0660: 'System.Uri' defines operator == or operator != but does not override Object.Equals(object o)
+stubs.cs(6,16): warning CS0661: 'System.Uri' defines operator == or operator != but does not override Object.GetHashCode()
+stubs.cs(42,12): warning CS0436: The type 'System.Uri' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'System.Uri' in 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(6,16): (Location of symbol related to previous warning)
+c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll: (Location of symbol related to previous warning)
+stubs.cs(50,17): warning CS0436: The type 'System.Uri' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'System.Uri' in 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(6,16): (Location of symbol related to previous warning)
+c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll: (Location of symbol related to previous warning)
+stubs.cs(52,16): warning CS0436: The type 'System.Uri' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'System.Uri' in 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(6,16): (Location of symbol related to previous warning)
+c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll: (Location of symbol related to previous warning)
+stubs.cs(60,9): warning CS0436: The type 'System.Web.HttpRequest' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'System.Web.HttpRequest' in 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Web.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(47,25): (Location of symbol related to previous warning)
+c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Web.dll: (Location of symbol related to previous warning)
+stubs.cs(61,16): warning CS0436: The type 'System.Web.HttpContext' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'System.Web.HttpContext' in 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Web.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(58,25): (Location of symbol related to previous warning)
+c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Web.dll: (Location of symbol related to previous warning)
+stubs.cs(62,21): warning CS0436: The type 'System.Web.HttpRequest' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'System.Web.HttpRequest' in 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Web.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(47,25): (Location of symbol related to previous warning)
+c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Web.dll: (Location of symbol related to previous warning)
+stubs.cs(66,23): warning CS0436: The type 'System.Web.HttpContext' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'System.Web.HttpContext' in 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Web.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(58,25): (Location of symbol related to previous warning)
+c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Web.dll: (Location of symbol related to previous warning)
+stubs.cs(70,16): warning CS0436: The type 'System.Web.HttpRequest' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'System.Web.HttpRequest' in 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Web.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(47,25): (Location of symbol related to previous warning)
+c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Web.dll: (Location of symbol related to previous warning)
+stubs.cs(153,9): warning CS0436: The type 'System.Uri' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'System.Uri' in 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(6,16): (Location of symbol related to previous warning)
+c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll: (Location of symbol related to previous warning)
+stubs.cs(207,16): warning CS0436: The type 'System.Uri' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'System.Uri' in 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(6,16): (Location of symbol related to previous warning)
+c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll: (Location of symbol related to previous warning)
+stubs.cs(208,16): warning CS0436: The type 'System.Uri' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'System.Uri' in 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(6,16): (Location of symbol related to previous warning)
+c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll: (Location of symbol related to previous warning)
+stubs.cs(251,12): warning CS0436: The type 'System.Uri' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'System.Uri' in 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(6,16): (Location of symbol related to previous warning)
+c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll: (Location of symbol related to previous warning)
+stubs.cs(257,16): warning CS0436: The type 'System.Uri' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'System.Uri' in 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(6,16): (Location of symbol related to previous warning)
+c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll: (Location of symbol related to previous warning)
+stubs.cs(258,16): warning CS0436: The type 'System.Uri' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'System.Uri' in 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(6,16): (Location of symbol related to previous warning)
+c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll: (Location of symbol related to previous warning)
+stubs.cs(149,22): warning CS0108: 'DotNetOpenAuth.Messaging.IDirectedProtocolMessage.RequiredProtection' hides inherited member 'DotNetOpenAuth.Messaging.IProtocolMessage.RequiredProtection'. Use the new keyword if hiding was intended.
+stubs.cs(118,28): (Location of symbol related to previous warning)
+stubs.cs(176,23): warning CS0436: The type 'DotNetOpenAuth.Messaging.IDirectedProtocolMessage' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'DotNetOpenAuth.Messaging.IDirectedProtocolMessage' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\bin\Debug\DotNetOpenAuth.Core.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(138,22): (Location of symbol related to previous warning)
+bin\Debug\DotNetOpenAuth.Core.dll: (Location of symbol related to previous warning)
+stubs.cs(61,43): warning CS0436: The type 'System.Web.HttpContext' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'System.Web.HttpContext' in 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Web.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(58,25): (Location of symbol related to previous warning)
+c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Web.dll: (Location of symbol related to previous warning)
+stubs.cs(61,59): warning CS0436: The type 'System.Web.HttpRequest' in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs' conflicts with the imported type 'System.Web.HttpRequest' in 'c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Web.dll'. Using the type defined in 'c:\CCP\teamproject\OpenAuth\OpenAuth\stubs.cs'.
+stubs.cs(47,25): (Location of symbol related to previous warning)
+c:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Web.dll: (Location of symbol related to previous warning)
+stubs.cs(49,17): warning CS0649: Field 'System.Web.HttpRequest.p' is never assigned to, and will always have its default value null

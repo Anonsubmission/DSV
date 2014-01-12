@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildProjectDirectory), EnlistmentInfo.props))\EnlistmentInfo.props" Condition=" '$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildProjectDirectory), EnlistmentInfo.props))' != '' " />
+	<Import Project="$(MSBuildProjectDirectory)\DotNetOpenAuth.automated.props"/>
+
+	<PropertyGroup>
+		<BuildProjectTemplates>false</BuildProjectTemplates>
+	</PropertyGroup>
+
+	<Target Name="LayoutDependencies">
+		<MSBuild Projects="$(ProjectRoot)src\$(ProductName)\$(ProductName).proj"
+		         Properties="TargetFrameworkVersion=v4.5"
+		         Targets="BuildUnifiedProduct"
+		         BuildInParallel="$(BuildInParallel)" />
+		<MSBuild Projects="@(DelaySignedProjects)"
+		         Properties="TargetFrameworkVersion=v4.5"
+		         Targets="Sign"
+		         BuildInParallel="$(BuildInParallel)"
+		         Condition=" '%(DelaySignedProjects.Nonshipping)' != 'true' " />
+	</Target>
+
+	<Target Name="Layout" DependsOnTargets="LayoutDependencies">
+		<!-- Note that we use an MSBuild task for these dependencies rather than individual DependsOnTargets entries
+		     so that these builds can be executed in parallel. -->
+		<ItemGroup>
+			<ProjectsToBuild Include="$(ProjectRoot)vsix\vsix.proj" Condition=" '$(BuildProjectTemplates)' == 'true' ">
+				<Properties>TargetFrameworkVersion=v4.5</Properties>
+			</ProjectsToBuild>
+			<ProjectsToBuild Include="$(ProjectRoot)samples\samples.proj">
+				<Properties>TargetFrameworkVersion=v4.5</Properties>
+			</ProjectsToBuild>
+
+			<!-- Sandcastle doesn't seem to be able to handle .NET 4.0 dependencies right now. -->
+			<ProjectsToBuild Include="$(ProjectRoot)doc\doc.proj">
+				<Properties>TargetFrameworkVersion=v4.5</Properties>
+			</ProjectsToBuild>
+		</ItemGroup>
+		<MSBuild Projects="@(ProjectsToBuild)"
+						 Properties="%(ProjectsToBuild.Properties)"
+						 BuildInParallel="$(BuildInParallel)">
+			<Output TaskParameter="TargetOutputs" ItemName="DropLayoutDependencies"/>
+		</MSBuild>
+		<PropertyGroup>
+			<DropBin45Directory>$(DropDirectory)Bin-net4.5\</DropBin45Directory>
+			<DropLibDirectory>$(DropDirectory)Lib\</DropLibDirectory>
+			<DropProjectTemplatesDirectory>$(DropDirectory)Project Templates\</DropProjectTemplatesDirectory>
+			<DropSamplesDirectory>$(DropDirectory)Samples\</DropSamplesDirectory>
+			<DropSpecsDirectory>$(DropDirectory)Specs\</DropSpecsDirectory>
+		</PropertyGroup>
+		<ItemGroup>
+			<RedistributableFiles Include="@(DropLayoutDependencies)">
+				<Package>DotNetOpenAuth project templates</Package>
+			</RedistributableFiles>
+			<ExtensionVsix Include="@(DropLayoutDependencies)" Condition=" '%(DropLayoutDependencies.MSBuildSourceProjectFile)' == '$(ProjectRoot)vsix\vsix.proj' " />
+			<ProjectTemplatesVsi Include="@(DropLayoutDependencies)" Condition=" '%(DropLayoutDependencies.MSBuildSourceProjectFile)' == '$(ProjectRoot)vsi\vsi.proj' " />
+			<DropDirectories Include="
+						 $(DropDirectory);
+						 $(DropBin45Directory);
+						 $(DropLibDirectory);
+						 $(DropProjectTemplatesDirectory);
+						 $(DropSamplesDirectory);
+						 $(DropSpecsDirectory);
+										 " />
+
+			<DropSourceFiles Include="
+																$(ProjectRoot)Doc\$(ProductName).chm;
+																$(ProjectRoot)Doc\*.htm*;
+																$(ProjectRoot)LICENSE.txt;
+																$(ProjectRoot)CONTRIB.txt;
+																"
+											 Exclude="$(ProjectRoot)Doc\README.*.html;" />
+			<DropBin45SourceFiles Include="
+																$(ILMergeOutputAssembly45Directory)$(SignedSubPath)$(ProductName).dll;
+																$(ILMergeOutputAssembly45Directory)$(ProductName).pdb;
+																$(ILMergeOutputAssembly45Directory)$(ProductName).xml;
+																$(ProjectRoot)Doc\README.Bin.html;
+																$(ProjectRoot)src\$(ProductName).Core\Configuration\$(ProductName).xsd;
+													" />
+			<DropSatelliteSourceFiles Include="$(OutputPath)**\$(SignedSubPath)$(ProductName).resources.dll" />
+			<DropSatelliteSourceFiles>
+				<CultureDir>$([System.IO.Path]::GetDirectoryName('$([System.IO.Path]::GetDirectoryName('%(RecursiveDir)'))'))\</CultureDir>
+			</DropSatelliteSourceFiles>
+			<DropProjectTemplatesSourceFiles Include="@(ProjectTemplatesVsi)" />
+			<DropVsixSourceFiles Include="@(ExtensionVsix)" Condition=" '%(ExtensionVsix.IncludeInDrop)' == 'true' " />
+
+			<ExcludedDropSamplesSourceFiles Include="
+															$(ProjectRoot)**\obj\**;
+															$(ProjectRoot)**\*.sln.cache;
+															$(ProjectRoot)**\*.suo;
+															$(ProjectRoot)**\*.user;
+															$(ProjectRoot)**\*.vs10x;
+															$(ProjectRoot)**\*.gitignore;
+															$(ProjectRoot)**\*.ldf;
+															$(ProjectRoot)**\*.log*;
+															$(ProjectRoot)**\*~;
+															$(ProjectRoot)**\Debug\**;
+															$(ProjectRoot)**\StyleCop.Cache;
+															$(ProjectRoot)Samples\_ReSharper.*\**;
+															$(ProjectRoot)Samples\**\bin\**;
+															$(ProjectRoot)Samples\**\obj\**;
+															$(ProjectRoot)Samples\**\*.refresh_;
+															$(ProjectRoot)Samples\*.proj;
+															" />
+			<ExcludedDropSamplesSourceFiles Condition=" '$(IncludeOAuth2)' == 'false' " Include="
+															$(ProjectRoot)Samples\OAuthClient\**;
+															$(ProjectRoot)Samples\OAuthAuthorizationServer\**;
+															$(ProjectRoot)Samples\OAuthResourceServer\**;
+															" />
+			<DropSamplesSourceFiles Include="$(ProjectRoot)Samples\**" Exclude="@(ExcludedDropSamplesSourceFiles)" />
+			<DropSamplesSourceFiles Include="$(ProjectRoot)Samples\**\Bin\*.refresh"  />
+			<!-- Some .refresh files are only applicable to drop builds, so we rename them from *.refresh_ -->
+			<DropSamplesRefreshSourceFiles Include="$(ProjectRoot)Samples\**\*.refresh_" />
+			<DropSpecsSourceFiles Include="$(ProjectRoot)Doc\specs\*.htm*" />
+
+			<DropFiles Include="@(DropSourceFiles->'$(DropDirectory)%(RecursiveDir)%(FileName)%(Extension)')"/>
+			<DropBin45Files Include="@(DropBin45SourceFiles->'$(DropBin45Directory)%(RecursiveDir)%(FileName)%(Extension)')"/>
+			<DropSatelliteFiles Include="@(DropSatelliteSourceFiles->'$(DropBinDirectory)%(CultureDir)%(FileName)%(Extension)')" />
+			<DropProjectTemplatesFiles Include="@(DropProjectTemplatesSourceFiles->'$(DropProjectTemplatesDirectory)%(FileName)%(Extension)')" />
+			<DropVsixFiles Include="@(DropVsixSourceFiles->'$(DropProjectTemplatesDirectory)%(FileName)%(Extension)')" />
+			<DropSamplesFiles Include="@(DropSamplesSourceFiles->'$(DropSamplesDirectory)%(RecursiveDir)%(FileName)%(Extension)')"/>
+			<DropSamplesRefreshFiles Include="@(DropSamplesRefreshSourceFiles->'$(DropSamplesDirectory)%(RecursiveDir)%(FileName).refresh')"/>
+			<DropSamplesToolsProjects Include="$(DropSamplesDirectory)OpenIdOfflineProvider\OpenIdOfflineProvider.csproj" />
+			<DropSpecsFiles Include="@(DropSpecsSourceFiles->'$(DropSpecsDirectory)%(RecursiveDir)%(FileName)%(Extension)')"/>
+
+			<AllDropSources Include="
+										@(DropSourceFiles);
+										@(DropBin45SourceFiles);
+										@(DropSatelliteSourceFiles);
+										@(DropProjectTemplatesSourceFiles);
+										@(DropVsixSourceFiles);
+										@(DropSamplesSourceFiles);
+										@(DropSamplesRefreshSourceFiles);
+										@(DropDocSourceFiles);
+										@(DropSpecsSourceFiles);
+										" />
+
+			<AllDropTargets Include="
+										@(DropFiles);
+										@(DropBin45Files);
+										@(DropSatelliteFiles);
+										@(DropProjectTemplatesFiles);
+										@(DropVsixFiles);
+										@(DropSamplesFiles);
+										@(DropSamplesRefreshFiles);
+										@(DropDocFiles);
+										@(DropSpecsFiles)
+										" />
+
+			<DropSamplesFilesFixups Include="@(DropSamplesFiles)" Condition=" '%(Extension)' == '.aspx' ">
+				<Pattern>&lt;%@ Register Assembly="DotNetOpenAuth[^"]+"</Pattern>
+				<Replacement>&lt;%@ Register Assembly="DotNetOpenAuth"</Replacement>
+			</DropSamplesFilesFixups>
+			<DropSamplesFilesFixups Include="@(DropSamplesFiles)" Condition=" '%(Extension)' == '.xaml' ">
+				<Pattern>xmlns\:(.+)assembly=DotNetOpenAuth([^;"]+)</Pattern>
+				<Replacement>xmlns:$1assembly=DotNetOpenAuth</Replacement>
+			</DropSamplesFilesFixups>
+			<DropSamplesFilesFixups Include="@(DropSamplesFiles)" Condition=" '%(Extension)' == '.config' ">
+				<Pattern>type=&quot;DotNetOpenAuth([^,]+), DotNetOpenAuth([^&quot;]+)&quot;</Pattern>
+				<Replacement>type=&quot;DotNetOpenAuth$1, DotNetOpenAuth&quot;</Replacement>
+			</DropSamplesFilesFixups>
+		</ItemGroup>
+
+		<!-- clean up any previous drop with the same name so we don't aggregate files. -->
+		<MakeDir Directories="@(DropDirectories)" />
+		<Copy SourceFiles="@(AllDropSources)" DestinationFiles="@(AllDropTargets)" SkipUnchangedFiles="true" />
+		<Purge Directories="$(DropDirectory)" IntendedFiles="@(AllDropTargets)" />
+		<!-- fix up the samples so that they will compile right out of the drop -->
+		<ItemGroup>
+			<SampleProjectTargets Include="$(DropSamplesDirectory)**\*.*proj" />
+			<SampleSolutionTargets Include="$(DropSamplesDirectory)**\*.sln" />
+		</ItemGroup>
+		<FixupShippingToolSamples Projects="@(DropSamplesToolsProjects)"
+		                          RemoveImportsStartingWith="%24(ProjectRoot)tools\" />
+		<ChangeProjectReferenceToAssemblyReference Projects="@(SampleProjectTargets)"
+		  ProjectReferences="@(ProjectReferencesToRemove)" References="@(AssemblyReferencesToReplaceWith)" />
+		<RegexFileReplace
+			Files="@(DropSamplesFilesFixups)"
+			Pattern="%(Pattern)"
+			Replacement="%(Replacement)" />
+		<DowngradeProjects
+			Projects="@(SampleProjectTargets);@(SampleSolutionTargets)"
+			Condition=" '$(DowngradeVS2010ToVS2008)' != 'false' "
+			/>
+		<ItemGroup>
+			<!-- Go snag the newly created files so that .zip file will include them. -->
+			<AllDropTargets Include="$(DropSamplesDirectory)**\*-vs2008.*" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="Build" DependsOnTargets="Layout" Returns="@(RedistributableFiles)">
+		<ItemGroup>
+			<DropZip Include="$(DropDirectoryNoSlash).7z" />
+			<DropZip Include="$(DropDirectoryNoSlash).zip" />
+			<RedistributableFiles Include="@(DropZip)">
+				<Package>DotNetOpenAuth</Package>
+			</RedistributableFiles>
+		</ItemGroup>
+		<Delete Files="@(DropZip)" />
+		<AddFilesTo7Zip
+			Files="@(AllDropTargets)"
+			ZipFileName="%(DropZip.Identity)"
+			WorkingDirectory="$(DropsRoot)"
+			ToolPath="$(Zip7ToolPath)" />
+	</Target>
+
+	<Import Project="$(ProjectRoot)tools\DotNetOpenAuth.automated.targets"/>
+	<Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildProjectDirectory), EnlistmentInfo.targets))\EnlistmentInfo.targets" Condition=" '$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildProjectDirectory), EnlistmentInfo.targets))' != '' " />
+</Project>

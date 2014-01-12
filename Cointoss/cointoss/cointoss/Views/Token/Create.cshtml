@@ -1,0 +1,44 @@
+﻿@model cointoss.Models.Token
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Token</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.OAuthToken)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.OAuthToken)
+            @Html.ValidationMessageFor(model => model.OAuthToken)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EffectiveResult)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EffectiveResult)
+            @Html.ValidationMessageFor(model => model.EffectiveResult)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

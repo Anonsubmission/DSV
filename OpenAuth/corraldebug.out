@@ -1,0 +1,23 @@
+Running transformation pass 1: Rewriting asserts
+Running transformation pass 2: Rewriting calls
+Running transformation pass 3: Pruning program
+Running transformation pass 4: SequentialInstrumentation
+Verifying program while tracking: {assertsPassed, $Alloc, $Exception, F$PoirotMain.p, F$PoirotMain.c, F$PoirotMain.pas, F$DotNetOpenAuth.OpenId.Messages.RequestBase._Recipient_Scheme, F$DotNetOpenAuth.OpenId.Messages.IndirectSignedResponse._ReturnTo_Scheme, F$DotNetOpenAuth.OpenId.Messages.RequestBase._Recipient_Authority, F$DotNetOpenAuth.OpenId.Messages.IndirectSignedResponse._ReturnTo_Authority, F$DotNetOpenAuth.Messaging.Channel.outgoingBindingElements, F$DotNetOpenAuth.OpenId.Messages.RequestBase._Recipient_AbsolutePath, F$DotNetOpenAuth.OpenId.Messages.IndirectSignedResponse._ReturnTo_AbsolutePath}
+Running transformation pass 5: Variable Slicing
+Running transformation pass 6: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr
+  [0.6873207 s]  
+ReachedBound
+0 counterexamples.
+Program has no bugs
+Reached recursion bound of 1
+
+Boogie verification time: 0.69 s
+Time spent reading-writing programs: 0.17 s
+
+Time spent checking a program (1): 1.51 s
+Time spent checking a path (0): 0.00 s
+
+Number of procedures inlined: 17
+Number of variables tracked: 13
+Total Time: 3.6989321 s

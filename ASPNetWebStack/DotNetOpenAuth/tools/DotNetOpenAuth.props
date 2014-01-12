@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" InitialTargets="InitializeProps">
+	<PropertyGroup>
+		<ProductName>DotNetOpenAuth</ProductName>
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+		<TargetFrameworkVersion Condition=" '$(TargetFrameworkVersion)' == '' ">v4.0</TargetFrameworkVersion>
+		<DisableFastUpToDateCheck>false</DisableFastUpToDateCheck>
+		<DropsRoot>$(ProjectRoot)drops\$(TargetFrameworkVersion)\$(Configuration)\</DropsRoot>
+		<OutputPath>$(ProjectRoot)bin\$(TargetFrameworkVersion)\$(Configuration)\</OutputPath>
+		<OutputPath35>$(ProjectRoot)bin\v3.5\$(Configuration)\</OutputPath35>
+		<OutputPath40>$(ProjectRoot)bin\v4.0\$(Configuration)\</OutputPath40>
+		<OutputPath45>$(ProjectRoot)bin\v4.5\$(Configuration)\</OutputPath45>
+		<DocOutputPath>$(ProjectRoot)doc\</DocOutputPath>
+		<IntermediatePath>$(ProjectRoot)obj\$(TargetFrameworkVersion)\$(Configuration)\</IntermediatePath>
+		<IntermediatePath40>$(ProjectRoot)obj\v4.0\$(Configuration)\</IntermediatePath40>
+		<BaseIntermediateOutputPath Condition=" '$(BaseIntermediateOutputPath)' == '' ">obj\$(TargetFrameworkVersion)\</BaseIntermediateOutputPath>
+		<ToolsDir>$(ProjectRoot)tools\</ToolsDir>
+		<ZipLevel>6</ZipLevel>
+		<Zip7ToolPath>$(ToolsDir)7-Zip.x86\</Zip7ToolPath>
+		<NuGetToolPath>$(ToolsDir)NuGet\</NuGetToolPath>
+		<ZipFormat Condition=" '$(ZipFormat)' == '' ">.7z</ZipFormat>
+		<ClrVersion Condition=" '$(TargetFrameworkVersion)' == 'v4.0' or '$(TargetFrameworkVersion)' == 'v4.5' ">4</ClrVersion>
+		<ClrVersion Condition=" '$(ClrVersion)' == '' ">2</ClrVersion>
+		<ILMergeTargetPlatformVersion Condition=" '$(ClrVersion)' == '2' ">2.0</ILMergeTargetPlatformVersion>
+		<ILMergeTargetPlatformVersion Condition=" '$(TargetFrameworkVersion)' == 'v4.0' ">4.0</ILMergeTargetPlatformVersion>
+		<ILMergeTargetPlatformVersion Condition=" '$(TargetFrameworkVersion)' == 'v4.5' ">4.5</ILMergeTargetPlatformVersion>
+		<BuildCodeContractsReferenceAssemblies>false</BuildCodeContractsReferenceAssemblies>
+
+		<SignAssembly>true</SignAssembly>
+		<PublicKeyFile Condition="'$(PublicKeyFile)' == ''">$(ProjectRoot)src\official-build-key.pub</PublicKeyFile>
+		<AssemblyOriginatorKeyFile Condition="'$(AssemblyOriginatorKeyFile)' == ''">$(PublicKeyFile)</AssemblyOriginatorKeyFile>
+		<KeyPairContainer Condition="'$(KeyPairContainer)' == ''">DotNetOpenAuth</KeyPairContainer>
+		<PublicKeyToken>2780CCD10D57B246</PublicKeyToken>
+		<DelaySign>true</DelaySign>
+		<SignedSubPath>signed\</SignedSubPath>
+
+		<ILMergeOutputAssemblyDirectory>$(OutputPath)unified\</ILMergeOutputAssemblyDirectory>
+		<ILMergeOutputAssembly35Directory>$(OutputPath35)unified\</ILMergeOutputAssembly35Directory>
+		<ILMergeOutputAssembly40Directory>$(OutputPath40)unified\</ILMergeOutputAssembly40Directory>
+		<ILMergeOutputAssembly45Directory>$(OutputPath45)unified\</ILMergeOutputAssembly45Directory>
+		<ILMergeOutputAssembly>$(ILMergeOutputAssemblyDirectory)$(ProductName).dll</ILMergeOutputAssembly>
+		<ILMergeOutputXmlDocs>$(ILMergeOutputAssemblyDirectory)$(ProductName).xml</ILMergeOutputXmlDocs>
+		<ILMergeOutputContractAssemblyDirectory>$(ILMergeOutputAssemblyDirectory)CodeContracts\</ILMergeOutputContractAssemblyDirectory>
+		<ILMergeOutputContractAssembly>$(ILMergeOutputContractAssemblyDirectory)$(ProductName).Contracts.dll</ILMergeOutputContractAssembly>
+
+		<!-- Always use our own toolset's copy of Code Contracts for reliably reproducible builds. 
+		     Suppress the installed code contracts from importing itself. -->
+		<DontImportCodeContracts>true</DontImportCodeContracts>
+		<ImportCodeContractsFromToolset>true</ImportCodeContractsFromToolset>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(ClrVersion)' == '4' ">
+		<ILMergeTargetPlatformDirectory>$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\$(TargetFrameworkVersion)</ILMergeTargetPlatformDirectory>
+	</PropertyGroup>
+	<ItemGroup>
+		<ILMergeSearchDirectories Include="$(ProjectRoot)lib" />
+		<ILMergeSearchDirectories Include="$(ProjectRoot)lib\net-$(TargetFrameworkVersion)" />
+	</ItemGroup>
+	<ItemGroup Condition=" '$(ClrVersion)' == '4' ">
+		<ILMergeSearchDirectories Include="$(ILMergeTargetPlatformDirectory)" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(ClrVersion)' != '4' ">
+		<ILMergeSearchDirectories Include="
+																$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\v3.0;
+																$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\v3.5;
+																" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProductProjectNames Include="
+									   DotNetOpenAuth.Core;
+										 DotNetOpenAuth.Core.UI;
+										 Mono.Math;
+										 Org.Mentalis.Security.Cryptography;
+										 DotNetOpenAuth.OpenId;
+										 DotNetOpenAuth.OpenId.UI;
+										 DotNetOpenAuth.OpenId.Provider;
+										 DotNetOpenAuth.OpenId.Provider.UI;
+										 DotNetOpenAuth.OpenId.RelyingParty;
+										 DotNetOpenAuth.OpenId.RelyingParty.UI;
+										 DotNetOpenAuth.OAuth.Common;
+										 DotNetOpenAuth.OAuth;
+										 DotNetOpenAuth.OAuth.Consumer;
+										 DotNetOpenAuth.OAuth.ServiceProvider;
+										 DotNetOpenAuth.InfoCard;
+										 DotNetOpenAuth.InfoCard.UI;
+										 DotNetOpenAuth.OpenIdInfoCard.UI;
+										 DotNetOpenAuth.OpenIdOAuth;
+										 " />
+		<ProductProjectNames Include="
+										 DotNetOpenAuth.OAuth2;
+										 DotNetOpenAuth.OAuth2.ClientAuthorization;
+										 DotNetOpenAuth.OAuth2.AuthorizationServer;
+										 DotNetOpenAuth.OAuth2.Client;
+										 DotNetOpenAuth.OAuth2.Client.UI;
+										 DotNetOpenAuth.OAuth2.ResourceServer;
+										">
+			<MergeIntoUnifiedAssembly Condition=" '$(IncludeOAuth2)' == 'false' ">false</MergeIntoUnifiedAssembly>
+		</ProductProjectNames>
+		<ProductProjects Include="@(ProductProjectNames->'$(ProjectRoot)src\%(Identity)\%(Identity).csproj')"/>
+		<DelaySignedProjects Include="
+													 @(ProductProjects);
+													 $(ProjectRoot)src\dotnetopenauth\dotnetopenauth.proj;
+													 " />
+		<DelaySignedProjects Include="$(ProjectRoot)src\dotnetopenauth.test\dotnetopenauth.test.csproj">
+			<Nonshipping>true</Nonshipping>
+		</DelaySignedProjects>
+		<DelaySignedProjects Include="$(ProjectRoot)samples\openidofflineprovider\openidofflineprovider.csproj">
+			<TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+		</DelaySignedProjects>
+
+		<ProjectReferencesToRemove Include="@(ProductProjectNames->'..\..\src\%(Identity)\%(Identity).csproj')" />
+		<AssemblyReferencesToReplaceWith Include="@(ProjectReferencesToRemove->'..\..\Bin-net4.0\$(ProductName).dll')" />
+
+		<SignDependsOn Include="Build" Condition=" '$(SuppressBuildTarget)' != 'true' " />
+		<ILMergeInputAssemblies Condition=" '$(ClrVersion)' == '2' "
+		                        Include="$(ProjectRoot)lib\Microsoft.Contracts.dll" />
+	</ItemGroup>
+
+	<Import Project="$(ProjectRoot)lib\DotNetOpenAuth.BuildTasks.targets" />
+
+	<Target Name="InitializeProps">
+		<CheckAdminRights>
+			<Output TaskParameter="IsElevated" PropertyName="IsElevated" />
+		</CheckAdminRights>
+		<Message Text="IsElevated = $(IsElevated)" />
+	</Target>
+</Project>

@@ -1,0 +1,13 @@
+packages
+Backup*
+_UpgradeReport_Files
+UpgradeLog*.XML
+PrecompiledWeb
+_ReSharper.*
+*.suo
+*.cache
+*.user
+bin
+obj
+Bin
+packages

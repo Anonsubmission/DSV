@@ -1,0 +1,218 @@
+diff --git a/4c59870db504a9d52c63d9781ad63c9e37b88fc5:./Program.cs b/a33b037e0c7cee9eb20bd4d42f08e50ad4dd2a23:./Program.cs
+index 6062755..b4e11ef 100644
+--- a/4c59870db504a9d52c63d9781ad63c9e37b88fc5:./Program.cs
++++ b/a33b037e0c7cee9eb20bd4d42f08e50ad4dd2a23:./Program.cs
+@@ -12,15 +12,17 @@ using DotNetOpenAuth.Messaging;
+ using DotNetOpenAuth.Messaging.Bindings;
+ using DotNetOpenAuth.OpenId.ChannelElements;
+ using DotNetOpenAuth.OpenId.Extensions;
++using DotNetOpenAuth.OpenId.Extensions.SimpleRegistration;
+ using DotNetOpenAuth.OpenId.RelyingParty;
++using DotNetOpenAuth.OpenId.RelyingParty.Extensions;
+ 
+-   
+-public class GloabalState
++
++public class GlobalState
+ {
+     public static MessageProtections appliedProtection;
+-    public static bool is_endpoint_discovered;
+     public static PositiveAssertionResponse is_positive_assertion;
+-    public static string preTransEndPoint, postTransEndPoint;
++    public static ClaimsResponse claims;
++    public static IdentifierDiscoveryResult claimedEndPoint, actualEndPoint;
+ 
+ }
+ 
+@@ -108,7 +110,7 @@ namespace DotNetOpenAuth.Messaging{
+             }
+ 
+             //write to global object
+-            GloabalState.appliedProtection = appliedProtection;
++            GlobalState.appliedProtection = appliedProtection;
+ 
+             // Ensure that the message's protection requirements have been satisfied.
+             int a = (int)((IndirectSignedResponse)message).RequiredProtection;
+@@ -120,12 +122,10 @@ namespace DotNetOpenAuth.Messaging{
+             }
+ 
+             PositiveAssertionResponse1 _msg = (PositiveAssertionResponse1)message;
+-
+-            if (!(_msg.ReturnTo.Scheme == HttpContext.Current.Request.Url.Scheme))
+-                Contract.Assume(false);
+-            if (!(_msg.ReturnTo.Authority == HttpContext.Current.Request.Url.Authority))
+-                Contract.Assume(false);
++            _msg.EnsureValidMessage();
++            
+         }
++        
+ 	}
+ }
+ 
+@@ -143,16 +143,24 @@ namespace DotNetOpenAuth.OpenId.Messages
+         public void EnsureValidMessage()
+         {
+             this.VerifyReturnToMatchesRecipient();
+-        }
++        }  
+ 
+         private void VerifyReturnToMatchesRecipient()
+         {
++            /*
++            if (!(this._Recipient_Scheme == this._ReturnTo_Scheme))
++                Contract.Assume(false);
++            if (!(this._Recipient_Authority == this._ReturnTo_Authority))
++                Contract.Assume(false);
++            if (!(this._Recipient_AbsolutePath == this._ReturnTo_AbsolutePath))
++                Contract.Assume(false);*/
+             if (!(this.Recipient.Scheme == this.ReturnTo.Scheme))
+                 Contract.Assume(false);
+             if (!(this.Recipient.Authority == this.ReturnTo.Authority))
+                 Contract.Assume(false);
+             if (!(this.Recipient.AbsolutePath == this.ReturnTo.AbsolutePath))
+                 Contract.Assume(false);
++
+         }
+     }
+ }
+@@ -188,6 +196,10 @@ namespace DotNetOpenAuth.OpenId.RelyingParty
+         {
+ 
+             var result = new PositiveAuthenticationResponse1(response, relyingParty);
++
++            //RP's claimed endpoint
++            GlobalState.claimedEndPoint = result.Endpoint;
++
+             result.VerifyDiscoveryMatchesAssertionAsync_ccp(relyingParty, cancellationToken);
+ 
+             return result;
+@@ -201,16 +213,18 @@ namespace DotNetOpenAuth.OpenId.RelyingParty
+             var discoveryResults = relyingParty.Discover(claimedId, cancellationToken);
+             if (!discoveryResults.Contains(this.Endpoint))
+                 Contract.Assume(false);
++           // else
++             //   GlobalState.actualEndPoint = this.Endpoint;
+ 
+-            // if it gets to this stage, then pre transaction endpoint == post transaction end poing
+-            Contract.Assume((GloabalState.preTransEndPoint == GloabalState.postTransEndPoint)); 
+         }
+     }
+ 
+ 
+     public partial class OpenIdRelyingParty1 : OpenIdRelyingParty
+     {
+-        
++
++        static Picker p;
++
+         public IAuthenticationResponse GetResponseAsync_ccp(IProtocolMessage msg, CancellationToken cancellationToken)
+         {
+             
+@@ -219,18 +233,32 @@ namespace DotNetOpenAuth.OpenId.RelyingParty
+             NegativeAssertionResponse negativeAssertion;
+             IndirectSignedResponse positiveExtensionOnly;
+ 
+-            GloabalState.is_positive_assertion = positiveAssertion = message as PositiveAssertionResponse;
++           
++            GlobalState.claims = p.NondetClaimsResponse();
++
++            GlobalState.is_positive_assertion = positiveAssertion = message as PositiveAssertionResponse;
+ 
+-            if (GloabalState.is_positive_assertion != null)
++            if (GlobalState.is_positive_assertion != null)
+             {
+                 var response = PositiveAuthenticationResponse1.CreateAsync_ccp(positiveAssertion, this, cancellationToken);
++
++                //Check for extensions
++                ClaimsResponse sreg = ExtensionsInteropHelper.UnifyExtensionsAsSreg(response, true);
++                GlobalState.claims = sreg;
++
++                /*
++                if (GlobalState.claims.Email == null)
++                    Contract.Assume(false);
++                */
++                Contract.Assert(GlobalState.claims.Email == null);
++
+                 return response;
+             }
+             else if ((negativeAssertion = message as NegativeAssertionResponse) != null)
+             {
+                 return new NegativeAuthenticationResponse(negativeAssertion);
+             }
+-            
++
+             return null;
+             
+         }
+@@ -246,7 +274,7 @@ interface Picker
+     Uri NondetUri();
+     OpenIdRelyingParty1 NondetOpenIdRelyingParty1();
+     string NondetString();
+-    HttpRequest NondetHttpRequest();
++    ClaimsResponse NondetClaimsResponse();
+ }
+ 
+ 
+@@ -262,32 +290,50 @@ class PoirotMain
+     static OpenIdRelyingParty1 rp = new OpenIdRelyingParty1();
+     static Picker p, p1;
+     static IAuthenticationResponse result1;
+-
++    static Uri HttpContext_Current_Request_Url; 
+     static void Main()
+     {
+ 
+-        GloabalState.is_endpoint_discovered = false;
+         c = p.NondetChannel1();
+         pas.Recipient = p.NondetUri();
+ 
++        //initialization
++        GlobalState.is_positive_assertion = new PositiveAssertionResponse();
++        HttpContext_Current_Request_Url= p.NondetUri();
+ 
+         result = c.PrepareResponseAsync_CCP(pas);
+-       // Contract.Assert(pas.Recipient.Scheme == pas.ReturnTo.Scheme);
++
++        //OP's check: Does the recipent of the msg match the returnTo field?
++        Contract.Assert(pas.Recipient.Scheme == pas.ReturnTo.Scheme &&
++                        pas.Recipient.Authority == pas.ReturnTo.Authority);
+ 
+         rp = p1.NondetOpenIdRelyingParty1();
+         pas1.Recipient = p1.NondetUri();
++
+         //signature coverage    -- returnTo is protected by the signature
+-        /*pas1._ReturnTo_Scheme = pas._ReturnTo_Scheme;
+-        pas1._ReturnTo_Authority = pas._ReturnTo_Authority;*/
+-        Contract.Assume(pas1.ReturnTo.Scheme == pas.ReturnTo.Scheme);
+-        Contract.Assume(pas1.ReturnTo.Authority == pas.ReturnTo.Authority);
+-        
++        Contract.Assume(pas1.ReturnTo.Scheme == pas.ReturnTo.Scheme &&
++                        pas1.ReturnTo.Authority == pas.ReturnTo.Authority);
++
++        //OP is sending the message to the party requested the message
++        Contract.Assume(pas1.Recipient.Scheme == HttpContext_Current_Request_Url.Scheme &&
++                        pas1.Recipient.Authority == HttpContext_Current_Request_Url.Authority);
+ 
++        //BCT hack -- cancellation token must be initialized
+         CancellationToken x = default(CancellationToken);
+         result1 = rp.GetResponseAsync_ccp(pas1, x);
+-       
+-        //This is supplied by the developer of the convincee
+-        Contract.Assert(pas.ReturnTo.Scheme == HttpContext.Current.Request.Url.Scheme && pas.ReturnTo.Authority == HttpContext.Current.Request.Url.Authority);
+-     }
++
++        //RP check: Does the final returnTo field match our origin?
++        Contract.Assert(pas.ReturnTo.Scheme == HttpContext_Current_Request_Url.Scheme &&
++                        pas.ReturnTo.Authority == HttpContext_Current_Request_Url.Authority);
++        
++
++        //check for extension
++        //Contract.Assert(GlobalState.claims.Email == null);
++
++        //RP check: verify claimed id resolves to the correct endpoint
++       // Contract.Assert(GlobalState.is_positive_assertion == null || GlobalState.claimedEndPoint == GlobalState.actualEndPoint);
++
++        //Contract.Assert(GlobalState.is_positive_assertion != null && GlobalState.is_positive_assertion == null);
++    }
+ }
+ 
