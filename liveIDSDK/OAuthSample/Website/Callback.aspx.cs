@@ -25,14 +25,14 @@
 
         // Make sure this is identical to the redirect_uri parameter passed in WL.init() call.
 
-        public const string callback = "http://a.shuochen.com:54432/Website/callback.aspx";
+        public const string callback = "http://a.foo1234.com:54432/Website/callback.aspx";
 
         public const string clientSecret = "zMVS1BpoNHwtdTnSzazSt2JgLd1hxRA1";
 
 
         private const string oauthUrl = "https://login.live.com/oauth20_token.srf";
 
-        public static JsonWebToken userInfo;    //the final result of authentication
+        public static JsonWebToken userInfo=null;    //the final result of authentication
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -57,6 +57,28 @@
 #if (!DSV)
                 bool result = DSVHelper.DSV_Check(final_digest);
 #endif
+                /* Note:
+                 * The UserID cookie is only a ad-hoc way to communicate back to the browser in order to display (for the demo purpose). 
+                 * The server-side logic shoudn't rely on this cookie for authentication.
+                 * 
+                 * The real user ID to be used is Session["UserID"]
+                 */
+
+                HttpCookie newCookie = new HttpCookie("UserID");   
+                newCookie.Path = "/";
+                if (result == true && userInfo != null)
+                {
+                    newCookie.Value = HttpUtility.UrlEncode(userInfo.Claims.UserId);
+                    Session["UserID"] = userInfo.Claims.UserId;
+                }
+                else
+                {
+                    newCookie.Value = "";
+                    newCookie.Expires = DateTime.Now.AddDays(-1d);
+                    Session["UserID"] = "";
+                }
+                context.Response.Cookies.Add(newCookie);
+
                 return;
             }
 
@@ -170,7 +192,9 @@
             HttpCookie cookie = context.Request.Cookies[wlCookie];
             HttpCookie newCookie = new HttpCookie(wlCookie);
             newCookie.Path = "/";
-            newCookie.Domain = context.Request.Headers["Host"];
+           
+           //[I don't know why specifying domain will result in the cookie not set in the browser. My test domain is a.foo1234.com:54432.   ]
+           //newCookie.Domain = context.Request.Headers["Host"];
 
             if (cookie != null && cookie.Values != null)
             {
@@ -185,7 +209,6 @@
                 userInfo = ReadUserInfoFromAuthToken(token);
                 // The userInfo contains identifiable information about the user.
                 // You may add some logic here.
-
                 newCookie[OAuthConstants.AccessToken] = HttpUtility.UrlEncode(token.AccessToken);
                 newCookie[OAuthConstants.AuthenticationToken] = HttpUtility.UrlEncode(token.AuthenticationToken);
                 newCookie[OAuthConstants.Scope] = HttpUtility.UrlPathEncode(token.Scope);
@@ -206,17 +229,18 @@
             context.Response.Cookies.Add(newCookie);
         }
 
+       
         private static JsonWebToken ReadUserInfoFromAuthToken(OAuthToken token)
         {
             string authenticationToken = token.AuthenticationToken;
 
             Dictionary<int, string> keys = new Dictionary<int, string>();
 
-            //shuo:begin
+            
             //the original sample code seems wrong
             // keys.Add(0, clientSecret);
             keys.Add(1, clientSecret);
-            //shuo:end
+           
 
             JsonWebToken jwt = null;
             try

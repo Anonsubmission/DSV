@@ -15,27 +15,30 @@ public class DSVHelper
         public static string predicate = @"
             Contract.Assert(LiveIDServer.IdpAuth[Auth_req.MSPAuth][Auth_req.clientId].clientId == Callback.clientId);
             Contract.Assert(LiveIDServer.IdpAuth[Auth_req.MSPAuth][Auth_req.clientId].callback == Callback.callback);
-            Contract.Assert(LiveIDServer.IdpAuth[Auth_req.MSPAuth][Auth_req.clientId].token.jwt.Claims.ClientIdentifier == Callback.userInfo.Claims.ClientIdentifier);
+            Contract.Assert(LiveIDServer.IdpAuth[Auth_req.MSPAuth][Auth_req.clientId].token.jwt.Claims.UserId == Callback.userInfo.Claims.UserId);
 ";
         public static string[] whitelist = new string[2] { "RP", "MSFT" };
     
     
         static Dictionary<string, string> codeHashMap = new Dictionary<string, string>();
 
-        static string dehash_server_host = "http://dehash.com:81/";   //anonymized for submission
+        static string dehash_server_host = "http://ericchen.me:81/"; 
         static string upload_path = "verification/upload.php";
         static string dehash_path = "verification/dehash.php";
-
+        static string version_number = "//2014-1-10";   //this is needed because we cache MT-Digests, but only hash the API calls, not API implementations.
         static string root = "C:\\CCP\\teamproject\\liveid\\OAuthSample\\MT-Program";
 
         public static string request_code = @"
-        Callback.RequestAccessTokenByVerifier(RequestAccessTokenByVerifier_arg1, out RequestAccessTokenByVerifier_arg2, out RequestAccessTokenByVerifier_arg3, out RequestAccessTokenByVerifier_arg4);";
+        Callback.RequestAccessTokenByVerifier(RequestAccessTokenByVerifier_arg1, out RequestAccessTokenByVerifier_arg2, out RequestAccessTokenByVerifier_arg3, out RequestAccessTokenByVerifier_arg4);"
+            + version_number;
 
         public static string live_code = @"
-        oauth20_token__srf_retVal = LiveIDServer.oauth20_token__srf(oauth20_token__srf_arg1, oauth20_token__srf_arg2, oauth20_token__srf_arg3, oauth20_token__srf_arg4, oauth20_token__srf_arg5);";
+        oauth20_token__srf_retVal = LiveIDServer.oauth20_token__srf(oauth20_token__srf_arg1, oauth20_token__srf_arg2, oauth20_token__srf_arg3, oauth20_token__srf_arg4, oauth20_token__srf_arg5);"
+            + version_number;
 
         public static string return_code = @"
-        Callback.HandleTokenResponse(HandleTokenResponse_arg1, HandleTokenResponse_arg2, HandleTokenResponse_arg3, """", out HandleTokenResponse_arg4);";
+        Callback.HandleTokenResponse(HandleTokenResponse_arg1, HandleTokenResponse_arg2, HandleTokenResponse_arg3, """", out HandleTokenResponse_arg4);"
+            + version_number;
 
         protected static string HttpReq(string url, string post, string method, string refer = "")
         {
@@ -344,6 +347,7 @@ class PoirotMain
             p.StartInfo.UseShellExecute = false;
             p.StartInfo.RedirectStandardOutput = true;
             p.StartInfo.FileName = root + "\\run.bat";
+            //return true;
             p.Start();
             
 

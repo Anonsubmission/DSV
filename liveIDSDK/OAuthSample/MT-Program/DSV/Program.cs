@@ -46,16 +46,16 @@ class PoirotMain
         {
 
 
-        Callback.RequestAccessTokenByVerifier(RequestAccessTokenByVerifier_arg1, out RequestAccessTokenByVerifier_arg2, out RequestAccessTokenByVerifier_arg3, out RequestAccessTokenByVerifier_arg4);
-        oauth20_token__srf_retVal = LiveIDServer.oauth20_token__srf(oauth20_token__srf_arg1, oauth20_token__srf_arg2, oauth20_token__srf_arg3, oauth20_token__srf_arg4, oauth20_token__srf_arg5);
+        Callback.RequestAccessTokenByVerifier(RequestAccessTokenByVerifier_arg1, out RequestAccessTokenByVerifier_arg2, out RequestAccessTokenByVerifier_arg3, out RequestAccessTokenByVerifier_arg4);//2014-1-10
+        oauth20_token__srf_retVal = LiveIDServer.oauth20_token__srf(oauth20_token__srf_arg1, oauth20_token__srf_arg2, oauth20_token__srf_arg3, oauth20_token__srf_arg4, oauth20_token__srf_arg5);//2014-1-10
             if (oauth20_token__srf_retVal == null) return;
 
             HandleTokenResponse_arg2 = oauth20_token__srf_retVal;
 
-        Callback.HandleTokenResponse(HandleTokenResponse_arg1, HandleTokenResponse_arg2, HandleTokenResponse_arg3, "", out HandleTokenResponse_arg4);
+        Callback.HandleTokenResponse(HandleTokenResponse_arg1, HandleTokenResponse_arg2, HandleTokenResponse_arg3, "", out HandleTokenResponse_arg4);//2014-1-10
             Contract.Assert(LiveIDServer.IdpAuth[Auth_req.MSPAuth][Auth_req.clientId].clientId == Callback.clientId);
             Contract.Assert(LiveIDServer.IdpAuth[Auth_req.MSPAuth][Auth_req.clientId].callback == Callback.callback);
-            Contract.Assert(LiveIDServer.IdpAuth[Auth_req.MSPAuth][Auth_req.clientId].token.jwt.Claims.ClientIdentifier == Callback.userInfo.Claims.ClientIdentifier);
+            Contract.Assert(LiveIDServer.IdpAuth[Auth_req.MSPAuth][Auth_req.clientId].token.jwt.Claims.UserId == Callback.userInfo.Claims.UserId);
             
         }
     }

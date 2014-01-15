@@ -6,111 +6,171 @@ Verifying program while tracking: {assertsPassed, $Exception}
 Running transformation pass 5: Variable Slicing
 Running transformation pass 6: Some verification pass
 Verifying implementation PoirotMain.Main_SeqInstr
-  [0.464313 s]  
+  [0.371371 s]  
 Errors
 1 counterexamples.
 Program has a potential bug: Running transformation pass 7: Variable Slicing
 Running transformation pass 8: Some verification pass
 Verifying implementation PoirotMain.Main_SeqInstr_trace_1
-  [0.1050704 s]  
+  [0.132132 s]  
 Correct
 0 counterexamples.
 False bug
 Running transformation pass 9: Variable Slicing
 Running transformation pass 10: Some verification pass
 Verifying implementation PoirotMain.Main_SeqInstr_trace_1
-  [0.0820553 s]  
+  [0.11011 s]  
 Correct
 0 counterexamples.
 Running transformation pass 11: Variable Slicing
-  [0.1521025 s]  
+  [0.158158 s]  
 Verifying program while tracking: {assertsPassed, $Exception, F$PoirotMain.oauth20_token__srf_arg5}
 Running transformation pass 12: Variable Slicing
 Running transformation pass 13: Some verification pass
 Verifying implementation PoirotMain.Main_SeqInstr
-  [0.166115 s]  
+  [0.182182 s]  
 Errors
 1 counterexamples.
 Program has a potential bug: Running transformation pass 14: Variable Slicing
 Running transformation pass 15: Some verification pass
 Verifying implementation PoirotMain.Main_SeqInstr_trace_1
-  [0.125088 s]  
+  [0.154154 s]  
 Correct
 0 counterexamples.
 False bug
 Running transformation pass 16: Variable Slicing
 Running transformation pass 17: Some verification pass
 Verifying implementation PoirotMain.Main_SeqInstr_trace_1
-  [0.1185888 s]  
+  [0.148148 s]  
 Correct
 0 counterexamples.
 Running transformation pass 18: Variable Slicing
-  [0.2155734 s]  
+  [0.239239 s]  
 Verifying program while tracking: {assertsPassed, $Exception, F$PoirotMain.oauth20_token__srf_arg5, F$PoirotMain.HandleTokenResponse_arg3}
 Running transformation pass 19: Variable Slicing
 Running transformation pass 20: Some verification pass
 Verifying implementation PoirotMain.Main_SeqInstr
-  [0.1810995 s]  
+  [0.169169 s]  
 Errors
 1 counterexamples.
 Program has a potential bug: Running transformation pass 21: Variable Slicing
 Running transformation pass 22: Some verification pass
 Verifying implementation PoirotMain.Main_SeqInstr_trace_1
-  [0.108889 s]  
+  [0.167167 s]  
 Correct
 0 counterexamples.
 False bug
 Running transformation pass 23: Variable Slicing
 Running transformation pass 24: Some verification pass
 Verifying implementation PoirotMain.Main_SeqInstr_trace_1
-  [0.0912688 s]  
+  [0.16016 s]  
 Correct
 0 counterexamples.
 Running transformation pass 25: Variable Slicing
-  [0.2001383 s]  
+  [0.218218 s]  
 Verifying program while tracking: {assertsPassed, $Exception, F$PoirotMain.oauth20_token__srf_arg5, F$PoirotMain.HandleTokenResponse_arg3, F$PoirotMain.oauth20_token__srf_retVal}
 Running transformation pass 26: Variable Slicing
 Running transformation pass 27: Some verification pass
 Verifying implementation PoirotMain.Main_SeqInstr
-  [0.2657216 s]  
+  [0.267267 s]  
 Errors
 1 counterexamples.
 Program has a potential bug: Running transformation pass 28: Variable Slicing
 Running transformation pass 29: Some verification pass
 Verifying implementation PoirotMain.Main_SeqInstr_trace_1
-  [0.1856834 s]  
+  [0.24024 s]  
 Correct
 0 counterexamples.
 False bug
 Running transformation pass 30: Variable Slicing
 Running transformation pass 31: Some verification pass
 Verifying implementation PoirotMain.Main_SeqInstr_trace_1
-  [0.181681 s]  
+  [0.195195 s]  
 Errors
 1 counterexamples.
 Running transformation pass 32: Variable Slicing
-  [0.3522183 s]  
+  [0.322322 s]  
 Verifying program while tracking: {assertsPassed, $Exception, F$PoirotMain.oauth20_token__srf_arg5, F$PoirotMain.HandleTokenResponse_arg3, F$PoirotMain.oauth20_token__srf_retVal, F$OAuthTest.OAuthToken.jwt}
 Running transformation pass 33: Variable Slicing
 Running transformation pass 34: Some verification pass
 Verifying implementation PoirotMain.Main_SeqInstr
-  [0.1910148 s]  
+  [0.174174 s]  
 Errors
 1 counterexamples.
 Program has a potential bug: Running transformation pass 35: Variable Slicing
 Running transformation pass 36: Some verification pass
 Verifying implementation PoirotMain.Main_SeqInstr_trace_1
-  [0.2181229 s]  
+  [0.194194 s]  
+Correct
+0 counterexamples.
+False bug
+Running transformation pass 37: Variable Slicing
+Running transformation pass 38: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr_trace_1
+  [0.198198 s]  
 Errors
 1 counterexamples.
-True bug
+Running transformation pass 39: Variable Slicing
+  [0.526526 s]  
+Verifying program while tracking: {assertsPassed, $Exception, F$PoirotMain.oauth20_token__srf_arg5, F$PoirotMain.HandleTokenResponse_arg3, F$PoirotMain.oauth20_token__srf_retVal, F$OAuthTest.OAuthToken.jwt, F$Authorization_Code_Entry.MSPAuth, F$Auth_req.MSPAuth, F$LiveIDServer.IdpAuth, F$PoirotMain.oauth20_token__srf_arg1, AllMaps, F$Auth_req.clientId, F$Authorization_Code_Entry.clientId}
+Running transformation pass 40: Variable Slicing
+Running transformation pass 41: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr
+  [0.219219 s]  
+Errors
+1 counterexamples.
+Program has a potential bug: Running transformation pass 42: Variable Slicing
+Running transformation pass 43: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr_trace_1
+  [0.227227 s]  
+Correct
+0 counterexamples.
+False bug
+Running transformation pass 44: Variable Slicing
+Running transformation pass 45: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr_trace_1
+  [0.214214 s]  
+Errors
+1 counterexamples.
+Running transformation pass 46: Variable Slicing
+  [0.367367 s]  
+Verifying program while tracking: {assertsPassed, $Exception, F$PoirotMain.oauth20_token__srf_arg5, F$PoirotMain.HandleTokenResponse_arg3, F$PoirotMain.oauth20_token__srf_retVal, F$OAuthTest.OAuthToken.jwt, F$Authorization_Code_Entry.MSPAuth, F$Auth_req.MSPAuth, F$LiveIDServer.IdpAuth, F$PoirotMain.oauth20_token__srf_arg1, AllMaps, F$Auth_req.clientId, F$Authorization_Code_Entry.clientId, F$LiveIDServer.app_registration, F$App_Registration.callback, F$Authorization_Code_Entry.callback}
+Running transformation pass 47: Variable Slicing
+Running transformation pass 48: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr
+  [0.261261 s]  
+Errors
+1 counterexamples.
+Program has a potential bug: Running transformation pass 49: Variable Slicing
+Running transformation pass 50: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr_trace_1
+  [0.253253 s]  
+Correct
+0 counterexamples.
+False bug
+Running transformation pass 51: Variable Slicing
+Running transformation pass 52: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr_trace_1
+  [0.226226 s]  
+Errors
+1 counterexamples.
+Running transformation pass 53: Variable Slicing
+  [0.412412 s]  
+Verifying program while tracking: {assertsPassed, $Exception, F$PoirotMain.oauth20_token__srf_arg5, F$PoirotMain.HandleTokenResponse_arg3, F$PoirotMain.oauth20_token__srf_retVal, F$OAuthTest.OAuthToken.jwt, F$Authorization_Code_Entry.MSPAuth, F$Auth_req.MSPAuth, F$LiveIDServer.IdpAuth, F$PoirotMain.oauth20_token__srf_arg1, AllMaps, F$Auth_req.clientId, F$Authorization_Code_Entry.clientId, F$LiveIDServer.app_registration, F$App_Registration.callback, F$Authorization_Code_Entry.callback, F$OAuthTest.Callback.userInfo, F$OAuthTest.JsonWebToken.JsonWebTokenClaims.$UserId$k__BackingField, F$Authorization_Code_Entry.token, F$PoirotMain.HandleTokenResponse_arg2, F$OAuthTest.JsonWebToken.$Claims$k__BackingField}
+Running transformation pass 54: Variable Slicing
+Running transformation pass 55: Some verification pass
+Verifying implementation PoirotMain.Main_SeqInstr
+  [0.213213 s]  
+Correct
+0 counterexamples.
+Program has no bugs
 
-Boogie verification time: 3.40 s
-Time spent reading-writing programs: 2.84 s
+Boogie verification time: 6.72 s
+Time spent reading-writing programs: 4.21 s
 
-Time spent checking a program (5): 3.06 s
-Time spent checking a path (13): 4.02 s
+Time spent checking a program (8): 3.98 s
+Time spent checking a path (21): 8.44 s
 
-Number of procedures inlined: 52
-Number of variables tracked: 6
-Total Time: 9.2046324 s
+Number of procedures inlined: 88
+Number of variables tracked: 21
+Total Time: 14.110096 s

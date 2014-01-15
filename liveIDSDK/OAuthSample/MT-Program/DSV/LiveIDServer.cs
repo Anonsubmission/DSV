@@ -74,11 +74,11 @@
                 Authorization_Code_Entry entry = code_to_codeEntry[varString];
                 if (entry == null)
                     return null;
-  /*              if (entry.clientId != clientId             
+                if (entry.clientId != clientId             
                     || LiveIDServer.app_registration[clientId].clientSecret != clientSecret
                     //   interestingly, we found that LiveID server doesn't check "entry.callback!=callback"
                     )
-                    return null;*/
+                    return null;
                 
                 Contract.Assume(entry.clientId == Auth_req.clientId
                          && entry.callback == Auth_req.callback);

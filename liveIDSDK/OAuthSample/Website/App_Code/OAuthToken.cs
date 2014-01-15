@@ -22,7 +22,7 @@ namespace OAuthTest
         [DataMember(Name = OAuthConstants.Scope)]
         public string Scope { get; set; }
 
-        //shuo:
+      
         public JsonWebToken jwt;
     }
 }

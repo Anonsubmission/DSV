@@ -14,9 +14,10 @@
     </style>	
 </head>
 <body>
-<h1>Windows Live Test</h1>
+<h1>Sample of DSV-enhanced LiveID sign-on</h1>
 <div>
   <div id="meName" class="Name"></div>
+  <div id="userID" class="Name"></div>
   <div id="meImg"></div>
   <div id="signin"></div>
 </div>
@@ -25,8 +26,8 @@
 
     // Update the following values
     var client_id = "000000004C108D95",
-        scope = [/*"wl.signin", */"wl.basic", "wl.offline_access"],
-        redirect_uri = "http://a.shuochen.com:54432/Website/callback.aspx";
+        scope = ["wl.signin", "wl.basic", "wl.offline_access"],
+        redirect_uri = "http://a.foo1234.com:54432/Website/callback.aspx";
 
     function id(domId) {
         return document.getElementById(domId);
@@ -71,9 +72,29 @@
         }
     );
 
+
     WL.init({ client_id: client_id, redirect_uri: redirect_uri, response_type: "code" });
 
     WL.ui({ name: "signin", element: "signin" });
+
+
+    id("userID").innerHTML = "LiveID of the authenticated user (refresh the page to see the current value): <font color=green>" + getCookies()["UserID"] + "</font>";
+    function getCookies() {
+        var cookies = {};           // The object we will return
+        var all = document.cookie;  // Get all cookies in one big string
+        if (all === "")             // If the property is the empty string
+            return cookies;         // return an empty object
+        var list = all.split("; "); // Split into individual name=value pairs
+        for (var i = 0; i < list.length; i++) {  // For each cookie
+            var cookie = list[i];
+            var p = cookie.indexOf("=");        // Find the first = sign
+            var name = cookie.substring(0, p);   // Get cookie name
+            var value = cookie.substring(p + 1);  // Get cookie value
+            value = decodeURIComponent(value);  // Decode the value
+            cookies[name] = value;              // Store name and value in object
+        }
+        return cookies;
+    }
 </script>
 </body>
 </html>
