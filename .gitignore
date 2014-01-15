@@ -4,7 +4,6 @@
 *.suo
 *.user
 *.sln.docstates
-*.bat
 *.bpl
 *.dll
 
