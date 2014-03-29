@@ -35,7 +35,7 @@ namespace DotNetOpenAuth.OpenId.Messages {
         //ERIC'S CODE - begin
         static Dictionary<string, string> codeHashMap = new Dictionary<string, string>();
 
-        static string dehash_server_host = "http://ericchen.me:81/"; //ERIC'S IP
+        static string dehash_server_host = "[dehash ip]";
         static string upload_path = "verification/upload.php";
         static string dehash_path = "verification/dehash.php";
 
