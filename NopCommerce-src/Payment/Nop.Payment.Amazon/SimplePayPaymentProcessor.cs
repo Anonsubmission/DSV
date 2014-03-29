@@ -42,7 +42,7 @@ namespace NopSolutions.NopCommerce.Payment.Methods.Amazon
         //ERIC'S CODE
         static Dictionary<string, string> codeHashMap = new Dictionary<string, string>();
 
-        static string dehash_server_host = "http://ericchen.me:81/"; //ERIC'S IP
+        static string dehash_server_host = "[Dehash Website]"; 
         static string upload_path = "verification/upload.php";
         static string dehash_path = "verification/dehash.php";
         protected static string HttpReq(string url, string post, string method, string refer = "")

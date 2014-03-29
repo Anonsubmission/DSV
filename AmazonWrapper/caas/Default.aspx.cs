@@ -44,7 +44,7 @@ namespace caas
                     post.Add(item.key, "http://localhost:38623/pay.aspx?path_digest=" + form["path_digest"]);
                 else if (item.key == "signature")
                     post.Add(item.key, AmazonHelper.SignParameters(post.Params,
-                        "WfZ3JnrY8mpJ8DZ7VlL07+RYtWznX3PWHNV8Zj5M", //simplePay secret key
+                        "[secret key]", //simplePay secret key
                         post.Method,
                         "authorize.payments-sandbox.amazon.com",
                         "/pba/paypipeline"));
@@ -57,7 +57,7 @@ namespace caas
             post.Add("immediateReturn", "1");
             post.Add("signatureVersion", "2");
             post.Add("signatureMethod", "HmacSHA256");
-            post.Add("accessKey", "AKIAJB4XJRGX6XRRVIDA");
+            post.Add("accessKey", "[AWS access key]");
             post.Add("amount", "USD 35.12");
             post.Add("description", "Your store name, 9");
             post.Add("amazonPaymentsAccountId", "IGFCUTPWGXVM311K1E6QTXIQ1RPEIUG5PTIMUZ");
