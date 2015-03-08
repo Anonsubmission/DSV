@@ -12,6 +12,7 @@ using NopSolutions.NopCommerce.Payment.Methods.Amazon;
 
 namespace NopSolutions.NopCommerce.Web
 {
+    
     public partial class AmazonSimplePayReturn : BaseNopPage
     {
         protected void Page_Load(object sender, EventArgs e)
@@ -26,6 +27,7 @@ namespace NopSolutions.NopCommerce.Web
 
             if(!Page.IsPostBack)
             {
+                //ERIC'S CODE
                 if(!AmazonHelper.ValidateRequest(Request.QueryString, String.Format("{0}AmazonSimplePayReturn.aspx", CommonHelper.GetStoreLocation()), "GET"))
                 {
                     Response.Redirect(CommonHelper.GetStoreLocation());

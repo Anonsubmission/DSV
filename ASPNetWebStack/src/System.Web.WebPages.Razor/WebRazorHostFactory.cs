@@ -18,7 +18,6 @@ namespace System.Web.WebPages.Razor
 
     public class WebRazorHostFactory
     {
-        //ERIC'S CODE
         private static ConcurrentDictionary<string, Func<WebRazorHostFactory>> _factories =
             new ConcurrentDictionary<string, Func<WebRazorHostFactory>>(StringComparer.OrdinalIgnoreCase);
 
@@ -172,7 +171,6 @@ namespace System.Web.WebPages.Razor
         // JUSTIFICATION: BuildManager.GetType is only available in ASP.Net environment
 #endif
 
-        //ERIC'S CODE
         //private static Type DefaultTypeFactory(string typeName)
         public static Type DefaultTypeFactory(string typeName)
         {

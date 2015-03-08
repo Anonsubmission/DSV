@@ -18,15 +18,6 @@ namespace Global
     {
         public static ProtocolAgnosticBet[] bets = new ProtocolAgnosticBet[100];
         public static string AccountID;
-
-        /*
-        static GamblingSite()
-        {
-            for(int i=0; i<bets.Length; i++)
-            {
-                bets[i] = new ProtocolAgnosticBet();
-            }
-        }*/
     }
 
       
@@ -38,11 +29,22 @@ namespace Global
 
     public static class SimplePay
     {
-        public static int orderID;
-        public static string payee;
-        public static int price;
+        public static payment_record[] payments = new payment_record[100];
     }
-    
+
+    public enum CaasReturnStatus : int
+    {
+        Sucess,
+        Failure
+    }
+
+    public class payment_record
+    {
+        public int gross;
+        public int orderID;
+        public CaasReturnStatus status;
+        public string payee;
+    }
 
     public static class OAuthStates
     {

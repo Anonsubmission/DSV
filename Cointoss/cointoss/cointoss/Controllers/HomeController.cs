@@ -53,12 +53,12 @@ namespace cointoss.Controllers
                 ViewBag.error = "";
             }
 
-            //first, calculate pathdigest
+            //first, calculate symT
             NameValueCollection redirParams = new NameValueCollection();
-            string old_hash = parameters["path_digest"];
+            string old_hash = parameters["symT"];
             string new_hash = CCPHelper.code_to_hash(CCPHelper.VerifyTokenReq_code);
-            string path_digest = "CoinTosser[" + new_hash + "((" + old_hash + "))]";
-            redirParams["path_digest"] = path_digest;
+            string symT = "CoinTosser[" + new_hash + "((" + old_hash + "))]";
+            redirParams["symT"] = symT;
             redirParams["token"] = token;
             redirParams["result"] = dummyResult;
 
@@ -78,13 +78,13 @@ namespace cointoss.Controllers
             if (effectiveResult == dummyResult)
             {
                 new_hash = CCPHelper.code_to_hash(CCPHelper.GamblingReq_code);
-                path_digest = "CoinTosser[" + new_hash + "((" + old_hash + "))]";
+                symT = "CoinTosser[" + new_hash + "((" + old_hash + "))]";
 
                 //create signature
                 NameValueCollection redirQueryParams = new NameValueCollection();
                 redirQueryParams["id"] = id;
                 redirQueryParams["result"] = effectiveResult;
-                redirQueryParams["path_digest"] = path_digest;
+                redirQueryParams["symT"] = symT;
                 string return_uri = site_root + "/Home/Index?" + ToQueryString(redirQueryParams);
                 string signature = CryptoHelper.HashAndSignBytes(return_uri);
 
@@ -96,7 +96,7 @@ namespace cointoss.Controllers
                 post.Method = "POST";
                 post.Add("result", effectiveResult);
                 post.Add("id", id);
-                post.Add("path_digest", path_digest);
+                post.Add("symT", symT);
                 post.Add("signature", signature);
                 post.Post();
             }
@@ -117,11 +117,11 @@ namespace cointoss.Controllers
                 token.EffectiveResult = parameters["result"];
                 tokenDb.SaveChanges();
                 
-                string old_hash = parameters["path_digest"];
+                string old_hash = parameters["symT"];
                 string new_hash = CCPHelper.code_to_hash(CCPHelper.VerifyToken_code);
-                string path_digest = "OAuth[" + new_hash + "((" + old_hash + "))]";
+                string symT = "OAuth[" + new_hash + "((" + old_hash + "))]";
 
-                string result = token.EffectiveResult + "#" + path_digest;
+                string result = token.EffectiveResult + "#" + symT;
 
                 return result;
             }
@@ -166,11 +166,11 @@ namespace cointoss.Controllers
                 NameValueCollection redirParams = new NameValueCollection();
 
 
-                //first, calculate pathdigest
-                string old_hash = parameters["path_digest"];
+                //first, calculate symT
+                string old_hash = parameters["symT"];
                 string new_hash = CCPHelper.code_to_hash(CCPHelper.OAuth_code);
-                string path_digest = "OAuth[[" + new_hash + "(" + old_hash + ")]]";
-                redirParams["path_digest"] = path_digest;
+                string symT = "OAuth[[" + new_hash + "(" + old_hash + ")]]";
+                redirParams["symT"] = symT;
 
                 //assemble HTTP params
                 redirParams["token"] = token.OAuthToken;
@@ -192,7 +192,7 @@ namespace cointoss.Controllers
             return View();
         }
 
-        public ActionResult Index(string result, string id, string path_digest, string signature)
+        public ActionResult Index(string result, string id, string symT, string signature)
         {
             
 
@@ -204,7 +204,7 @@ namespace cointoss.Controllers
                 NameValueCollection redirQueryParams = new NameValueCollection();
                 redirQueryParams["id"] = id;
                 redirQueryParams["result"] = result;
-                redirQueryParams["path_digest"] = path_digest;
+                redirQueryParams["symT"] = symT;
                 string return_uri = site_root + "/Home/Index?" + ToQueryString(redirQueryParams);
 
                 if (!CryptoHelper.VerifySignedHash(return_uri, signature))
@@ -214,9 +214,9 @@ namespace cointoss.Controllers
                 else ViewBag.error = "";
 
                 string new_hash = CCPHelper.code_to_hash(CCPHelper.GamblingSite_code);
-                string new_path_digest = "GamblingSite[[" + new_hash + "(" + path_digest + ")]]";
+                string new_symT = "GamblingSite[[" + new_hash + "(" + symT + ")]]";
 
-                CCPHelper.generate_cs_file_from_symval(new_path_digest);
+                CCPHelper.generate_cs_file_from_symval(new_symT);
                 if (!CCPHelper.checkLogicProperty())
                 {
                     ViewBag.error = "Error: Boogie Verification failed";
@@ -255,10 +255,10 @@ namespace cointoss.Controllers
 
             NameValueCollection parameters = new NameValueCollection(Request.QueryString);
 
-            string old_hash = parameters["path_digest"];
+            string old_hash = parameters["symT"];
             string new_hash = CCPHelper.code_to_hash(CCPHelper.SimplePayResp_code);
-            string path_digest = "CaaS[[" + new_hash + "(" + old_hash + ")]]";
-            parameters["path_digest"] = path_digest;
+            string symT = "CaaS[[" + new_hash + "(" + old_hash + ")]]";
+            parameters["symT"] = symT;
 
             parameters.Remove("signature");
             
@@ -306,7 +306,7 @@ namespace cointoss.Controllers
             post.Add("amount", String.Format(CultureInfo.InvariantCulture, "USD {0:0.00}", amount));
             post.Add("description", flip);
             post.Add("amazonPaymentsAccountId", "IGFCUTPWGXVM311K1E6QTXIQ1RPEIUG5PTIMUZ");
-            post.Add("returnUrl", site_root + "/Home/SimplePayResp?path_digest=GamblingSite[["+codeHash+"()]]");
+            post.Add("returnUrl", site_root + "/Home/SimplePayResp?symT=GamblingSite[["+codeHash+"()]]");
             post.Add("processImmediate", "1");
             post.Add("referenceId", Convert.ToString(bet.ID));
             //the entire msg is signed using the pre-decided simplepay secret key

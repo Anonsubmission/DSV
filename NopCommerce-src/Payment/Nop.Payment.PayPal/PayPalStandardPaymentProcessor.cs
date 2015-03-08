@@ -77,161 +77,6 @@ namespace NopSolutions.NopCommerce.Payment.Methods.PayPal
 
         #endregion
 
-        //RUI begin
-        /// <summary>
-        /// source code for place order. todo: revise to PayPal's postProcessPayment
-        /// </summary>
-        public string SourceCode_PlaceOrder = @"
-public partial class PayPalStandardPaymentProcessor1 : PayPalStandardPaymentProcessor
-    {
-
-        public canonicalRequestResponse PostProcessPayment(Order order)
-        {
-            StringBuilder builder = new StringBuilder();
-            string returnURL = CommonHelper.GetStoreLocation(false) + ""PaypalPDTHandler.aspx"";
-            string cancel_returnURL = CommonHelper.GetStoreLocation(false) + ""PaypalCancel.aspx"";
-
-            string cmd = string.Empty;
-            if (SettingManager.GetSettingValueBoolean(""PaymentMethod.PaypalStandard.PassProductNamesAndTotals""))
-            {
-                cmd = ""_cart"";
-            }
-            else
-            {
-                cmd = ""_xclick"";
-            }
-            builder.AppendFormat(""?cmd={0}&business={1}"", cmd, HttpUtility.UrlEncode(businessEmail));
-            if (SettingManager.GetSettingValueBoolean(""PaymentMethod.PaypalStandard.PassProductNamesAndTotals""))
-            {
-                builder.AppendFormat(""&upload=1"");
-
-                //get the items in the cart
-                decimal cartTotal = decimal.Zero;
-                var cartItems = order.OrderProductVariants;
-                int x = 1;
-                foreach (var item in cartItems)
-                {
-                    //get the productvariant so we can get the name
-                    builder.AppendFormat(""&item_name_"" + x + ""={0}"", HttpUtility.UrlEncode(item.ProductVariant.FullProductName));
-                    builder.AppendFormat(""&amount_"" + x + ""={0}"", item.UnitPriceExclTax.ToString(""0.00"", CultureInfo.InvariantCulture));
-                    builder.AppendFormat(""&quantity_"" + x + ""={0}"", item.Quantity);
-                    x++;
-                    cartTotal += item.PriceExclTax;
-                }
-
-                //the checkout attributes that have a dollar value and send them to Paypal as items to be paid for
-                var caValues = CheckoutAttributeHelper.ParseCheckoutAttributeValues(order.CheckoutAttributesXml);
-                foreach (var val in caValues)
-                {
-                    var attPrice = TaxManager.GetCheckoutAttributePrice(val, false, order.Customer);
-                    if (attPrice > 0) //if it has a price
-                    {
-                        var ca = val.CheckoutAttribute;
-                        if (ca != null)
-                        {
-                            var attName = ca.LocalizedName; //set the name
-                            builder.AppendFormat(""&item_name_"" + x + ""={0}"", HttpUtility.UrlEncode(attName)); //name
-                            builder.AppendFormat(""&amount_"" + x + ""={0}"", attPrice.ToString(""0.00"", CultureInfo.InvariantCulture)); //amount
-                            builder.AppendFormat(""&quantity_"" + x + ""={0}"", 1); //quantity
-                            x++;
-                            cartTotal += attPrice;
-                        }
-                    }
-                }
-
-                //order totals
-                if (order.OrderShippingExclTax > decimal.Zero)
-                {
-                    builder.AppendFormat(""&shipping_1={0}"", order.OrderShippingExclTax.ToString(""0.00"", CultureInfo.InvariantCulture));
-                    cartTotal += order.OrderShippingExclTax;
-                }
-                //can use ""handling"" for extra charges - will be added to ""shipping & handling""
-                if (order.PaymentMethodAdditionalFeeExclTax > decimal.Zero)
-                {
-                    builder.AppendFormat(""&handling_1={0}"", order.PaymentMethodAdditionalFeeExclTax.ToString(""0.00"", CultureInfo.InvariantCulture));
-                    cartTotal += order.PaymentMethodAdditionalFeeExclTax;
-                }
-                //tax
-                if (order.OrderTax > decimal.Zero)
-                {
-                    //builder.AppendFormat(""&tax_1={0}"", order.OrderTax.ToString(""0.00"", CultureInfo.InvariantCulture));
-
-                    //add tax as item
-                    builder.AppendFormat(""&item_name_"" + x + ""={0}"", HttpUtility.UrlEncode(""Sales Tax"")); //name
-                    builder.AppendFormat(""&amount_"" + x + ""={0}"", order.OrderTax.ToString(""0.00"", CultureInfo.InvariantCulture)); //amount
-                    builder.AppendFormat(""&quantity_"" + x + ""={0}"", 1); //quantity
-
-                    cartTotal += order.OrderTax;
-                    x++;
-                }
-
-                if (cartTotal > order.OrderTotal && cartTotal != order.OrderTotal)
-                {
-                    /* Take the difference between what the order total is and what it should be and use that as the ""discount"".
-                     * The difference equals the amount of the gift card and/or reward points used. 
-                     */
-                    decimal discountTotal = cartTotal - order.OrderTotal;
-                    //gift card or rewared point amount applied to cart in nopCommerce - shows in Paypal as ""discount""
-                    builder.AppendFormat(""&discount_amount_cart={0}"", discountTotal.ToString(""0.00"", CultureInfo.InvariantCulture));
-                }
-            }
-            else
-            {
-                //pass order total
-                builder.AppendFormat(""&item_name=Order Number {0}"", order.OrderId);
-                builder.AppendFormat(""&amount={0}"", order.OrderTotal.ToString(""0.00"", CultureInfo.InvariantCulture));
-            }
-
-            builder.AppendFormat(""&custom={0}"", order.OrderGuid);
-            builder.Append(string.Format(""&no_note=1&currency_code={0}"", HttpUtility.UrlEncode(CurrencyManager.PrimaryStoreCurrency.CurrencyCode)));
-            builder.AppendFormat(""&invoice={0}"", order.OrderId);
-            builder.AppendFormat(""&rm=2"", new object[0]);
-            if (order.ShippingStatus != ShippingStatusEnum.ShippingNotRequired)
-                builder.AppendFormat(""&no_shipping=2"", new object[0]);
-            else
-                builder.AppendFormat(""&no_shipping=1"", new object[0]);
-            builder.AppendFormat(""&return={0}&cancel_return={1}"", HttpUtility.UrlEncode(returnURL), HttpUtility.UrlEncode(cancel_returnURL));
-
-
-            //address
-            //TODO move this param [address_override] to settings (PayPal configuration page)
-            builder.AppendFormat(""&address_override=1"");
-            builder.AppendFormat(""&first_name={0}"", HttpUtility.UrlEncode(order.BillingFirstName));
-            builder.AppendFormat(""&last_name={0}"", HttpUtility.UrlEncode(order.BillingLastName));
-            builder.AppendFormat(""&address1={0}"", HttpUtility.UrlEncode(order.BillingAddress1));
-            builder.AppendFormat(""&address2={0}"", HttpUtility.UrlEncode(order.BillingAddress2));
-            builder.AppendFormat(""&city={0}"", HttpUtility.UrlEncode(order.BillingCity));
-            //if (!String.IsNullOrEmpty(order.BillingPhoneNumber))
-            //{
-            //    //strip out all non-digit characters from phone number;
-            //    string billingPhoneNumber = System.Text.RegularExpressions.Regex.Replace(order.BillingPhoneNumber, @""\D"", string.Empty);
-            //    if (billingPhoneNumber.Length >= 10)
-            //    {
-            //        builder.AppendFormat(""&night_phone_a={0}"", HttpUtility.UrlEncode(billingPhoneNumber.Substring(0, 3)));
-            //        builder.AppendFormat(""&night_phone_b={0}"", HttpUtility.UrlEncode(billingPhoneNumber.Substring(3, 3)));
-            //        builder.AppendFormat(""&night_phone_c={0}"", HttpUtility.UrlEncode(billingPhoneNumber.Substring(6, 4)));
-            //    }
-            //}
-            StateProvince billingStateProvince = StateProvinceManager.GetStateProvinceById(order.BillingStateProvinceId);
-            if (billingStateProvince != null)
-                builder.AppendFormat(""&state={0}"", HttpUtility.UrlEncode(billingStateProvince.Abbreviation));
-            else
-                builder.AppendFormat(""&state={0}"", HttpUtility.UrlEncode(order.BillingStateProvince));
-            Country billingCountry = CountryManager.GetCountryById(order.BillingCountryId);
-            if (billingCountry != null)
-                builder.AppendFormat(""&country={0}"", HttpUtility.UrlEncode(billingCountry.TwoLetterIsoCode));
-            else
-                builder.AppendFormat(""&country={0}"", HttpUtility.UrlEncode(order.BillingCountry));
-            builder.AppendFormat(""&zip={0}"", HttpUtility.UrlEncode(order.BillingZipPostalCode));
-            builder.AppendFormat(""&email={0}"", HttpUtility.UrlEncode(order.BillingEmail));
-
-            HttpContext.Current.Response.Redirect(builder.ToString());
-            return string.Empty;
-        }
-    }
-";
-        //RUI end
-
         #region Methods
         /// <summary>
         /// Gets PDT details
@@ -240,7 +85,7 @@ public partial class PayPalStandardPaymentProcessor1 : PayPalStandardPaymentProc
         /// <param name="values">Values</param>
         /// <param name="response">Response</param>
         /// <returns>Result</returns>
-        public bool GetPDTDetails(string tx, out Dictionary<string, string> values, out string response, out string digest) //Rui: add digest
+        public bool GetPDTDetails(string tx, out Dictionary<string, string> values, out string response)
         {
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(GetPaypalUrl());
             req.Method = "POST";
@@ -273,47 +118,7 @@ public partial class PayPalStandardPaymentProcessor1 : PayPalStandardPaymentProc
                         values.Add(line.Substring(0, equalPox), line.Substring(equalPox + 1));
                 }
             }
- //Rui start
-            string getPDTDetails_PayPalCode = @"
-namespace NopSolutions.NopCommerce.Payment.Methods.PayPal
-{
-    public class payment_record
-    {
-        public int gross;
-        public int orderID;
-        public CaasReturnStatus status;
-        public string payee;
-        public int tx;
-    }
-    public class caas_state
-    {
-        public payment_record[] payments;
-        public caas_state(int m)
-        {
-            payments = new payment_record[m];
-        }
-    }
-    
-    public partial class CaaS
-    {
-        Picker p;
-        public caas_state caas = new caas_state(100);
-        public int getPDTDetails(string identity, int tx, out payment_record values)
-        {
-            int i;
-            i = p.NondetInt();
-            if (identity != caas.payments[i].payee)
-                Contract.Assume(false);
-            Contract.Assume(0 <= i && i < caas.payments.Length && caas.payments[i].tx == tx);
-            values = caas.payments[i];
-           
-            return i;
-        }
-    }
-}
-";
-            digest = PaypalHelper.code_to_hash(getPDTDetails_PayPalCode);
- //Rui end
+
             return success;
         }
 
@@ -378,10 +183,7 @@ namespace NopSolutions.NopCommerce.Payment.Methods.PayPal
             StringBuilder builder = new StringBuilder();
             string returnURL = CommonHelper.GetStoreLocation(false) + "PaypalPDTHandler.aspx";
             string cancel_returnURL = CommonHelper.GetStoreLocation(false) + "PaypalCancel.aspx";
-            //Rui revision
-            //builder.Append(GetPaypalUrl());
-            builder.Append("http://protoagnostic.cloudapp.net:8002/Default.aspx");
-
+            builder.Append(GetPaypalUrl());
             string cmd = string.Empty;
             if (SettingManager.GetSettingValueBoolean("PaymentMethod.PaypalStandard.PassProductNamesAndTotals"))
             {
@@ -515,15 +317,6 @@ namespace NopSolutions.NopCommerce.Payment.Methods.PayPal
                 builder.AppendFormat("&country={0}", HttpUtility.UrlEncode(order.BillingCountry));
             builder.AppendFormat("&zip={0}", HttpUtility.UrlEncode(order.BillingZipPostalCode));
             builder.AppendFormat("&email={0}", HttpUtility.UrlEncode(order.BillingEmail));
-
-   //RUI begin
-            string hash = PaypalHelper.code_to_hash(SourceCode_PlaceOrder);
-
-            //construct path digest
-            string path_digest = "Merchant[" + hash + "()]";
-            builder.AppendFormat("&path_digest={0}", path_digest);
-   //RUI end
-
             HttpContext.Current.Response.Redirect(builder.ToString());
             return string.Empty;
         }

@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ interface Picker
 
 namespace cointoss.Controllers
 {
-    public class HomeController1 : Controller
+    public partial class HomeController1 : Controller
     {
         Picker p;
         static string site_root = "http://localhost:2631";
@@ -34,236 +35,10 @@ namespace cointoss.Controllers
         private TokenDBContext tokenDb = new TokenDBContext();
         private BetDbContext betDb = new BetDbContext();
 
-        //stub function
-        public string FetchVerifyTokenResult(string token, string result)
-        {
-             //dummy return, this function should send out a direct http request
-             return "";
-        }
-
-        public CanonicalRequestResponse agnosticVerifyTokenRequest(CanonicalRequestResponse req)
-        {
-            CanonicalRequestResponse resp = new CanonicalRequestResponse();
-            resp.result = "head";
-            resp.id = req.id;
-            resp.token = req.token;
-            return resp;
-        }
-
-        public CanonicalRequestResponse agnosticFinalGamblingRequest(CanonicalRequestResponse req)
-        {
-            CanonicalRequestResponse resp = new CanonicalRequestResponse();
-
-            if (req.result != "")
-            {
-                resp.result = req.result;
-                resp.id = req.id;
-                resp.token = req.token;
-            }
-            else
-            {
-                Contract.Assume(false);
-            }
-
-            Contract.Assert(req.token == OAuthStates.records[0].token);
-            Contract.Assert(req.id == OAuthStates.records[0].betID);
-
-            return resp;
-        }
-
-        public ActionResult CoinTosser(string token, int id)
-        {
-            var client = new WebClient();
-            
-            //protocol agnostic code
-            CanonicalRequestResponse req = new CanonicalRequestResponse();
-            req.token = token;
-            req.id = id;
-
-            CanonicalRequestResponse req1 = agnosticVerifyTokenRequest(req);
-
-            string OAuthResponse = FetchVerifyTokenResult(req1.token, req1.result);
-
-            CanonicalRequestResponse resp1 = new CanonicalRequestResponse();
-            resp1.result = OAuthResponse;
-
-            agnosticFinalGamblingRequest(resp1);
-
-            if (resp1.result != "")
-            {
-                ViewBag.result = req.result;
-                //make a remote post back to gaming site
-                RemotePost post = new RemotePost();
-                post.FormName = "Cointoss";
-                post.Url = site_root + "/Home/Index";
-                post.Method = "POST";
-                post.Add("result", OAuthResponse);
-                post.Add("id", Convert.ToString(id));
-                post.Post();
-            }
-
-            return View();
-        }
-
-        public CanonicalRequestResponse agnosticVerifyToken(CanonicalRequestResponse req)
-        {
-            CanonicalRequestResponse resp = new CanonicalRequestResponse();
-
-            
-
-            if (req.token == OAuthStates.records[0].token && req.id == OAuthStates.records[0].betID)
-            {
-                resp.result = req.result;
-                resp.id = req.id;
-                resp.token = req.token;
-                OAuthStates.records[0].EffectiveResult = req.result;
-            }
-            else resp.result = "";
-            
-            return resp;
-        }
-
-        
-        public string VerifyToken()
-        {
-           
-            NameValueCollection parameters = new NameValueCollection(Request.QueryString);
-            string strToken = parameters["token"];
-            var token = tokenDb.Tokens
-                            .Where(t => t.OAuthToken == strToken)
-                            .FirstOrDefault();
-            CanonicalRequestResponse req = new CanonicalRequestResponse();
-            req.result = parameters["result"];
-            req.token = strToken;
-
-            // this function has no actual use, it's there for the proof
-            agnosticVerifyToken(req);
-
-            if (token != null && token.EffectiveResult == "untossed")
-            {
-                token.EffectiveResult = parameters["result"];
-                tokenDb.SaveChanges();
-      
-                return token.EffectiveResult;
-            }
-
-            return "";
-        }
-         
-
-        public CanonicalRequestResponse agnosticOAuth(CanonicalRequestResponse req)
-        {
-
-            //payment is successful, we can issue OAuth token
-            Token token = new Token();
-            token.OAuthToken = "TestOAuthToken";
-            token.EffectiveResult = "untossed";
-            token.Cost = Convert.ToString(req.price);
-            token.BetID = Convert.ToString(req.id);
-            //pass info to front end
-
-            ViewBag.token = token.OAuthToken;
-            ViewBag.price = token.Cost;
-            ViewBag.guess = token.InitialGuess;
-            ViewBag.betID = token.BetID;
-
-            tokenDb.Tokens.Add(token);
-            tokenDb.SaveChanges();
-
-            //protocol agnostic code
-            OAuthStates.records[0].token = token.OAuthToken;
-            OAuthStates.records[0].EffectiveResult = token.EffectiveResult;
-            OAuthStates.records[0].betID = req.id;
-
-            CanonicalRequestResponse resp = new CanonicalRequestResponse();
-            resp.token = token.OAuthToken;
-            resp.id = req.id;
-
-            return resp;
-
-        }
-
-        public ActionResult OAuth()
-        {
-
-            //first, reset the DB
-            var tokens = tokenDb.Tokens;
-            foreach (var token in tokens)
-            {
-                tokenDb.Tokens.Remove(token);
-            }
-
-            NameValueCollection parameters = new NameValueCollection(Request.QueryString);
-            CanonicalRequestResponse req = new CanonicalRequestResponse();
-            req.price = Convert.ToInt32(parameters["transactionAmount"]);
-            req.id = Convert.ToInt32(parameters["referenceId"]);
-            if (parameters["status"] == "PS" && parameters["recipientEmail"] == recipient_email)
-            {
-                agnosticOAuth(req);
-            }
-
-            return View();
-        }
-
-
-        public void agnosticGamblingSite(CanonicalRequestResponse req)
-        {
-            if (GamblingSite.bets[req.id].guess != req.result)
-            {
-                Contract.Assume(false);     
-            }
-
-        }
-
-        public ActionResult Index(string result, string id, string token)
-        {
-
-            //this if statement will trigger on the last step of the protocol
-            if (result == "head" || result == "tail")
-            {
-                int i = Convert.ToInt32(id);
-                Bet bet = betDb.Bets.Where(b => b.ID == i).FirstOrDefault();
-
-                CanonicalRequestResponse req = new CanonicalRequestResponse();
-                req.result = result;
-                req.id = Convert.ToInt32(id);
-                
-                
-                ViewBag.result = result;
-                ViewBag.bet = bet.amount;
-                ViewBag.guess = bet.guess;
-            }
-                     
-
-            return View();
-        }
-
-        public CanonicalRequestResponse agnosticSimplePayResp(CanonicalRequestResponse req)
-        {
-            CanonicalRequestResponse resp = new CanonicalRequestResponse();
-
-            //protocal agnostic code. 
-            //the code below should be executing on amazon's servers
-            SimplePay.orderID = req.id;
-            SimplePay.payee = req.payee;
-            SimplePay.price = req.price;
-            
-            
-            resp.id = req.id;
-            resp.price = req.price;
-            resp.payee = req.payee;
-
-            //Contract.Assert(resp.price == GamblingSite.bets[0].amount);
-
-            return resp;
-
-        }
-
-
         public CanonicalRequestResponse agnosticSimplePayReq(CanonicalRequestResponse req)
         {
             CanonicalRequestResponse resp = new CanonicalRequestResponse();
-            
+
             var bets = betDb.Bets;
             foreach (var b in bets)
             {
@@ -275,7 +50,7 @@ namespace cointoss.Controllers
             bet.amount = req.price;
             betDb.Bets.Add(bet);
             betDb.SaveChanges();
-            
+
             //protocol agnostic code
             GamblingSite.AccountID = "cs0317b@gmail.com";
             GamblingSite.bets[0].guess = req.flip;
@@ -312,22 +87,167 @@ namespace cointoss.Controllers
                         "/pba/paypipeline"));
             post.Post();
 
-            
-            
+
+
             return resp;
 
-        }
-
-        public void SimplePayReq(int amount, string flip)
-        {
-            CanonicalRequestResponse req = new CanonicalRequestResponse();
-            req.price = amount;
-            req.flip = flip;
-            agnosticSimplePayReq(req);
         }
     }
 }
 
+namespace cointoss.Controllers
+{
+    public partial class HomeController1 : Controller
+    {
+        public CanonicalRequestResponse agnosticSimplePayResp(CanonicalRequestResponse req)
+        {
+            CanonicalRequestResponse resp = new CanonicalRequestResponse();
+
+            int i;
+            i = p.NondetInt();
+            Contract.Assume(0 <= i && i < SimplePay.payments.Length);
+
+            //protocal agnostic code. 
+            //the code below should be executing on amazon's servers
+            /*
+            SimplePay.orderID = req.id;
+            SimplePay.payee = req.payee;
+            SimplePay.price = req.price;
+            */
+            SimplePay.payments[i].orderID = req.id;
+            SimplePay.payments[i].payee = req.payee;
+            SimplePay.payments[i].gross = req.price;
+
+            resp.id = req.id;
+            resp.price = req.price;
+            resp.payee = req.payee;
+
+            //Contract.Assert(resp.price == GamblingSite.bets[0].amount);
+
+            return resp;
+
+        }
+    }
+}
+
+namespace cointoss.Controllers
+{
+    public partial class HomeController1 : Controller
+    {
+        public CanonicalRequestResponse agnosticOAuth(CanonicalRequestResponse req)
+        {
+
+            //payment is successful, we can issue OAuth token
+            Token token = new Token();
+            token.OAuthToken = "TestOAuthToken";
+            token.EffectiveResult = "untossed";
+            token.Cost = Convert.ToString(req.price);
+            token.BetID = Convert.ToString(req.id);
+            //pass info to front end
+
+            ViewBag.token = token.OAuthToken;
+            ViewBag.price = token.Cost;
+            ViewBag.guess = token.InitialGuess;
+            ViewBag.betID = token.BetID;
+
+            tokenDb.Tokens.Add(token);
+            tokenDb.SaveChanges();
+
+            //protocol agnostic code
+            OAuthStates.records[0].token = token.OAuthToken;
+            OAuthStates.records[0].EffectiveResult = token.EffectiveResult;
+            OAuthStates.records[0].betID = req.id;
+
+            CanonicalRequestResponse resp = new CanonicalRequestResponse();
+            resp.token = token.OAuthToken;
+            resp.id = req.id;
+
+            return resp;
+
+        }
+    }
+}
+
+namespace cointoss.Controllers
+{
+    public partial class HomeController1 : Controller
+    {
+        public CanonicalRequestResponse agnosticVerifyTokenRequest(CanonicalRequestResponse req)
+        {
+            CanonicalRequestResponse resp = new CanonicalRequestResponse();
+            resp.result = "head";
+            resp.id = req.id;
+            resp.token = req.token;
+            return resp;
+        }
+    }
+}
+
+namespace cointoss.Controllers
+{
+    public partial class HomeController1 : Controller
+    {
+        public CanonicalRequestResponse agnosticVerifyToken(CanonicalRequestResponse req)
+        {
+            CanonicalRequestResponse resp = new CanonicalRequestResponse();
+
+
+
+            if (req.token == OAuthStates.records[0].token && req.id == OAuthStates.records[0].betID)
+            {
+                resp.result = req.result;
+                resp.id = req.id;
+                resp.token = req.token;
+                OAuthStates.records[0].EffectiveResult = req.result;
+            }
+            else resp.result = "";
+
+            return resp;
+        }
+    }
+}
+
+namespace cointoss.Controllers
+{
+    public partial class HomeController1 : Controller
+    {
+        public CanonicalRequestResponse agnosticFinalGamblingRequest(CanonicalRequestResponse req)
+        {
+            CanonicalRequestResponse resp = new CanonicalRequestResponse();
+
+            if (req.result != "")
+            {
+                resp.result = req.result;
+                resp.id = req.id;
+                resp.token = req.token;
+            }
+            else
+            {
+                Contract.Assume(false);
+            }
+
+            Contract.Assert(req.token == OAuthStates.records[0].token);
+            Contract.Assert(req.id == OAuthStates.records[0].betID);
+
+            return resp;
+        }
+    }
+}
+
+namespace cointoss.Controllers
+{
+    public partial class HomeController1 : Controller
+    {
+        public void agnosticGamblingSite(CanonicalRequestResponse req)
+        {
+            if (GamblingSite.bets[req.id].guess != req.result)
+            {
+                Contract.Assume(false);
+            }
+
+        }
+    }
+}
 
 class PoirotMain
 {
@@ -335,45 +255,59 @@ class PoirotMain
 
     static void Main()
     {
-        
+
         var controller = new HomeController1();
 
         CanonicalRequestResponse req1 = p.NondetReqResp();
         CanonicalRequestResponse resp1 = p.NondetReqResp();
-        
-        resp1 = controller.agnosticSimplePayReq(req1);
-
-        CanonicalRequestResponse req2 = resp1;
+        CanonicalRequestResponse req2 = p.NondetReqResp();
         CanonicalRequestResponse resp2 = p.NondetReqResp();
-        resp2 = controller.agnosticSimplePayResp(req2);
-
-        CanonicalRequestResponse req3 = resp2;
-        CanonicalRequestResponse resp3 = p.NondetReqResp(); 
-        resp3 = controller.agnosticOAuth(req3);
-
-        CanonicalRequestResponse req4 = resp3;
-        CanonicalRequestResponse resp4 = p.NondetReqResp(); 
-        resp4 = controller.agnosticVerifyTokenRequest(req4);
-
-        CanonicalRequestResponse req5 = resp4;
+        CanonicalRequestResponse req3 = p.NondetReqResp();
+        CanonicalRequestResponse resp3 = p.NondetReqResp();
+        CanonicalRequestResponse req4 = p.NondetReqResp();
+        CanonicalRequestResponse resp4 = p.NondetReqResp();
+        CanonicalRequestResponse req5 = p.NondetReqResp();
         CanonicalRequestResponse resp5 = p.NondetReqResp();
+        CanonicalRequestResponse req6 = p.NondetReqResp();
+        CanonicalRequestResponse resp6 = p.NondetReqResp();
+        CanonicalRequestResponse req7 = p.NondetReqResp();
+
+        resp1 = controller.agnosticSimplePayReq(req1);
+        req2 = resp1;
+
+        resp2 = controller.agnosticSimplePayResp(req2);
+        req3 = resp2;
+
+        resp3 = controller.agnosticOAuth(req3);
+        req4 = resp3;
+
+        resp4 = controller.agnosticVerifyTokenRequest(req4);
+        req5 = resp4;
+
         resp5 = controller.agnosticVerifyToken(req5);
+        req6 = resp5;
 
-        CanonicalRequestResponse req6 = resp5;
-        CanonicalRequestResponse resp6 = p.NondetReqResp(); 
         resp6 = controller.agnosticFinalGamblingRequest(req6);
+        req7 = resp6;
 
-        CanonicalRequestResponse req7 = resp6;
         controller.agnosticGamblingSite(req7);
-        
-        
+
+
         Contract.Assert(OAuthStates.records[0].EffectiveResult != "untossed");
         Contract.Assert(GamblingSite.bets[req7.id].guess == OAuthStates.records[0].EffectiveResult);
         Contract.Assert(OAuthStates.records[0].betID == req7.id);
 
+        /*
         Contract.Assert(GamblingSite.bets[req7.id].amount == SimplePay.price);
         Contract.Assert(SimplePay.orderID == req7.id);
         Contract.Assert(SimplePay.payee == GamblingSite.AccountID);
-        
+         */
+
+        Contract.Assert(Contract.Exists(0, SimplePay.payments.Length, i =>
+                SimplePay.payments[i].gross == GamblingSite.bets[req7.id].amount &&
+                SimplePay.payments[i].orderID == req7.id &&
+                SimplePay.payments[i].payee == GamblingSite.AccountID
+            ));
+
     }
 }

@@ -351,7 +351,7 @@ namespace DotNetOpenAuth.OpenId.Provider {
                         var signedMsg = response as ITamperResistantOpenIdMessage;
                         string signedField = ((ProviderSigningBindingElement)bindingElement).GetSignedParameterOrder(signedMsg);
 
-                        ((PositiveAssertionResponse)response).SymvalIdentifier = ((AuthenticationRequest)request).ProviderEndpoint.Authority + "[[" + PositiveAssertionResponse.hashvalue_op + "()]"; //openid.signed]";
+                        ((PositiveAssertionResponse)response).SymTIdentifier = ((AuthenticationRequest)request).ProviderEndpoint.Authority + "[[" + PositiveAssertionResponse.hashvalue_op + "()]"; //openid.signed]";
 
                     }
                 }

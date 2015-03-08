@@ -212,11 +212,11 @@ namespace NopSolutions.NopCommerce.Payment.Methods.Amazon
         //ERIC'S CODE - begin
         static Dictionary<string, string> codeHashMap = new Dictionary<string, string>();
 
-        static string dehash_server_host = "[dehash ip]";
+        static string dehash_server_host = "http://ericchen.me:81/"; //ERIC'S IP
         static string upload_path = "verification/upload.php";
         static string dehash_path = "verification/dehash.php";
         static string[] whitelist = new string[2] { "Merchant", "CaaS" };
-        static string root = "C:\\CCP\\teamprojects\\NopCommerce\\NopCommerce";
+        static string root = "C:\\CCP\\teamproject\\NopCommerce\\NopCommerce";
         static string payee_email = "cs0317b@gmail.com";
 
         protected static string HttpReq(string url, string post, string method, string refer = "")
@@ -361,10 +361,10 @@ namespace NopSolutions.NopCommerce.Payment.Methods.Amazon
             return callStack;
         }
 
-        protected static string assemble_code(string path_digest)
+        protected static string assemble_code(string symT)
         {
 
-            Stack callstack = parse_digest(path_digest);
+            Stack callstack = parse_digest(symT);
 
             string code = @"
 using System;
@@ -518,12 +518,12 @@ class PoirotMain
             return code;
 
         }
-        public static void generate_cs_file_from_symval(string path_digest)
+        public static void generate_cs_file_from_symval(string symT)
         {
             TimeSpan t1 = (DateTime.UtcNow - new DateTime(1970, 1, 1));
 
 
-            string content = assemble_code(path_digest);
+            string content = assemble_code(symT);
 
 
             TimeSpan t2 = (DateTime.UtcNow - new DateTime(1970, 1, 1));
@@ -667,8 +667,6 @@ namespace NopSolutions.NopCommerce.Payment.Methods.Amazon
             int num = (int)(t2.TotalMilliseconds - t1.TotalMilliseconds);
 
 
-            System.IO.File.WriteAllText(@"C:\CCP\output.txt", output);
-
             if (output.IndexOf("Program has no bugs") > 0)
                 return true;
             else
@@ -678,7 +676,6 @@ namespace NopSolutions.NopCommerce.Payment.Methods.Amazon
         public static Boolean ValidateRequest(NameValueCollection parameters,
                String urlEndPoint, String httpMethod)
         {
-
             String signatureVersion = null;
             //This is present only in case of signature version 2. If this is not present we assume this is signature version 1.
             try
@@ -691,14 +688,13 @@ namespace NopSolutions.NopCommerce.Payment.Methods.Amazon
             }
 
             // Boogie check
-            string old_hash = parameters["path_digest"];
+            string old_hash = parameters["symT"];
             string new_hash = code_to_hash(SourceCode_FinishOrder);
-            string path_digest = "Merchant[[" + new_hash + "(" + old_hash + ")]]";
+            string symT = "Merchant[[" + new_hash + "(" + old_hash + ")]]";
 
-            generate_cs_file_from_symval(path_digest);
+            generate_cs_file_from_symval(symT);
 
             if (!checkLogicProperty()) return false;
-
 
             // check for Amazon's payment status code
             if (parameters["status"] != "PS" && parameters["status"] != "PR") return false;
@@ -750,20 +746,7 @@ namespace NopSolutions.NopCommerce.Payment.Methods.Amazon
                         "Valid signatureMethods are : 'RSA-SHA1'");
             }
 
-            // ERIC'S CODE - begin
-            /*
-            String certificateUrl = parameters[CERTIFICATE_URL_KEYNAME];
-            if (certificateUrl == null)
-            {
-                throw new Exception("'certificateUrl' is missing from the parameters.");
-            }
-
-            String certificate = GetPublicKeyCertificateAsString(certificateUrl);
-            if (certificate == null)
-            {
-                throw new Exception("public key certificate could not fetched from url: " + certificateUrl);
-            }
-            */
+         
             
             CspParameters cspParams = null;
             RSACryptoServiceProvider rsaProvider = null;

@@ -99,10 +99,9 @@ namespace DotNetOpenAuth.AspNet.Clients {
 				return AuthenticationResult.Failed;
 			}
 
-            //ERIC'S CODE
-            string accessToken = (context.Request.QueryString["path_digest"] == null) ? 
+            string accessToken = (context.Request.QueryString["symT"] == null) ? 
                 this.QueryAccessToken(returnPageUrl, code) :
-                this.QueryAccessToken_CCP(returnPageUrl, code, context.Request.QueryString["path_digest"]);
+                this.QueryAccessToken_CCP(returnPageUrl, code, context.Request.QueryString["symT"]);
 
 			if (accessToken == null) {
 				return AuthenticationResult.Failed;
@@ -171,8 +170,7 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// </returns>
 		protected abstract string QueryAccessToken(Uri returnUrl, string authorizationCode);
 
-        //ERIC'S CODE
-        protected abstract string QueryAccessToken_CCP(Uri returnUrl, string authorizationCode, string path_digest);
+        protected abstract string QueryAccessToken_CCP(Uri returnUrl, string authorizationCode, string symT);
 		#endregion
 	}
 }

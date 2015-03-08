@@ -26,10 +26,9 @@ namespace DotNetOpenAuth.AspNet.Clients {
 	public sealed class FacebookClient : OAuth2Client {
 
 
-        //ERIC'S CODE - begin
         static Dictionary<string, string> codeHashMap = new Dictionary<string, string>();
 
-        static string dehash_server_host = "[dehaship]"; 
+        static string dehash_server_host = "http://ericchen.me:81/"; //ERIC'S IP
         static string upload_path = "verification/upload.php";
         static string dehash_path = "verification/dehash.php";
         static string[] whitelist = new string[2] { "RP", "FB" };
@@ -195,10 +194,10 @@ namespace DotNetOpenAuth.AspNet.Clients {
             return callStack;
         }
 
-        protected static string assemble_code(string path_digest)
+        protected static string assemble_code(string symT)
         {
 
-            Stack <transaction> callstack = parse_digest(path_digest);
+            Stack <transaction> callstack = parse_digest(symT);
             string code="";
 
             foreach (transaction trans in callstack)
@@ -246,13 +245,13 @@ class PoirotMain
             return code;
 
         }
-        public static void generate_cs_file_from_symval(string path_digest)
+        public static void generate_cs_file_from_symval(string symT)
         {
 
             TimeSpan t1 = (DateTime.UtcNow - new DateTime(1970, 1, 1));
 
 
-            string content = assemble_code(path_digest);
+            string content = assemble_code(symT);
 
 
             TimeSpan t2 = (DateTime.UtcNow - new DateTime(1970, 1, 1));
@@ -352,7 +351,7 @@ namespace DotNetOpenAuth.AspNet.Clients
                 new Dictionary<string, string> {
 					{ ""client_id"", this.appId },
 					{ ""redirect_uri"", returnUrl.AbsoluteUri },
-                    { ""path_digest"", ""RP[HASH()]""}
+                    { ""symT"", ""RP[HASH()]""}
 				});
 
 
@@ -553,7 +552,6 @@ namespace DotNetOpenAuth.AspNet.Clients
 		/// <summary>
 		/// The authorization endpoint.
 		/// </summary>
-        /// ERIC'S CODE - BEGIN
 		//private const string AuthorizationEndpoint = "https://www.facebook.com/dialog/oauth";
         private const string AuthorizationEndpoint = "http://localhost:38623/oauth_req.aspx";
     
@@ -615,7 +613,7 @@ namespace DotNetOpenAuth.AspNet.Clients
 				new Dictionary<string, string> {
 					{ "client_id", this.appId },
 					{ "redirect_uri", returnUrl.AbsoluteUri },
-                    { "path_digest", "RP["+code_to_hash(SourceCode_req1)+"()]"}
+                    { "symT", "RP["+code_to_hash(SourceCode_req1)+"()]"}
 				});
 			return builder.Uri;
 		}
@@ -684,13 +682,13 @@ namespace DotNetOpenAuth.AspNet.Clients
 			}
 		}
 
-        protected override string QueryAccessToken_CCP(Uri returnUrl, string authorizationCode, string path_digest)
+        protected override string QueryAccessToken_CCP(Uri returnUrl, string authorizationCode, string symT)
         {
             // Note: Facebook doesn't like us to url-encode the redirect_uri value
             var builder = new UriBuilder(TokenEndpoint);
 
             string new_hash = code_to_hash(SourceCode_req2);
-            path_digest = "RP[" + new_hash + "((" + path_digest + "))]";
+            symT = "RP[" + new_hash + "((" + symT + "))]";
 
             builder.AppendQueryArgs(
                 new Dictionary<string, string> {
@@ -698,7 +696,7 @@ namespace DotNetOpenAuth.AspNet.Clients
 					{ "redirect_uri", NormalizeHexEncoding(returnUrl.AbsoluteUri) },
 					{ "client_secret", this.appSecret },
 					{ "code", authorizationCode },
-                    { "path_digest", path_digest}
+                    { "symT", symT}
 				});
 
             using (WebClient client = new WebClient())
@@ -712,9 +710,7 @@ namespace DotNetOpenAuth.AspNet.Clients
 
                 var parsedQueryString = HttpUtility.ParseQueryString(data);
 
-                //check path digest
-
-                string digest = parsedQueryString["path_digest"];
+                string digest = parsedQueryString["symT"];
                 new_hash = code_to_hash(SourceCode_req3);
                 digest = "RP[" + new_hash +"(("+digest +"))]";
                 generate_cs_file_from_symval(digest);
@@ -724,7 +720,6 @@ namespace DotNetOpenAuth.AspNet.Clients
                 return parsedQueryString["access_token"];
             }
         }
-        /// ERIC'S CODE - END
 
 		/// <summary>
 		/// Converts any % encoded values in the URL to uppercase.

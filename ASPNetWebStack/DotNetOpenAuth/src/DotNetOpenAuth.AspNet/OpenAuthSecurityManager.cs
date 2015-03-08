@@ -221,9 +221,8 @@ namespace DotNetOpenAuth.AspNet {
 				// Hence, we need to put it in the VerifyAuthentication url again to please FB/Microsoft account providers.
 				uri = uri.AttachQueryStringParameter(SessionIdQueryStringName, sessionId);
 
-                //ERIC'S CODE
-                if (this.requestContext.Request.QueryString["path_digest"] != null)
-                    uri = uri.AttachQueryStringParameter("path_digest", this.requestContext.Request.QueryString["path_digest"]);
+                if (this.requestContext.Request.QueryString["symT"] != null)
+                    uri = uri.AttachQueryStringParameter("symT", this.requestContext.Request.QueryString["symT"]);
 
 				try {
 					AuthenticationResult result = oauth2Client.VerifyAuthentication(this.requestContext, uri);

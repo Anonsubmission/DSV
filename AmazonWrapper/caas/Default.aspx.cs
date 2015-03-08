@@ -38,17 +38,17 @@ namespace caas
             var items = form.AllKeys.SelectMany(form.GetValues, (k, v) => new { key = k, value = v });
             foreach (var item in items)
             {
-                if (item.key == "returnUrl" && form["path_digest"] == null)
+                if (item.key == "returnUrl" && form["symT"] == null)
                     post.Add(item.key, "http://localhost:38623/pay.aspx");
-                else if (item.key == "returnUrl" && form["path_digest"] != null)
-                    post.Add(item.key, "http://localhost:38623/pay.aspx?path_digest=" + form["path_digest"]);
+                else if (item.key == "returnUrl" && form["symT"] != null)
+                    post.Add(item.key, "http://localhost:38623/pay.aspx?symT=" + form["symT"]);
                 else if (item.key == "signature")
                     post.Add(item.key, AmazonHelper.SignParameters(post.Params,
-                        "[secret key]", //simplePay secret key
+                        "WfZ3JnrY8mpJ8DZ7VlL07+RYtWznX3PWHNV8Zj5M", //simplePay secret key
                         post.Method,
                         "authorize.payments-sandbox.amazon.com",
                         "/pba/paypipeline"));
-                else if (item.key == "path_digest") continue;
+                else if (item.key == "symT") continue;
                 else
                     post.Add(item.key, item.value);
             }
@@ -57,7 +57,7 @@ namespace caas
             post.Add("immediateReturn", "1");
             post.Add("signatureVersion", "2");
             post.Add("signatureMethod", "HmacSHA256");
-            post.Add("accessKey", "[AWS access key]");
+            post.Add("accessKey", "AKIAJB4XJRGX6XRRVIDA");
             post.Add("amount", "USD 35.12");
             post.Add("description", "Your store name, 9");
             post.Add("amazonPaymentsAccountId", "IGFCUTPWGXVM311K1E6QTXIQ1RPEIUG5PTIMUZ");

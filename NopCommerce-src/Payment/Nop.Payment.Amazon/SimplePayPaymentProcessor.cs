@@ -42,7 +42,7 @@ namespace NopSolutions.NopCommerce.Payment.Methods.Amazon
         //ERIC'S CODE
         static Dictionary<string, string> codeHashMap = new Dictionary<string, string>();
 
-        static string dehash_server_host = "[Dehash Website]"; 
+        static string dehash_server_host = "http://ericchen.me:81/"; //ERIC'S IP
         static string upload_path = "verification/upload.php";
         static string dehash_path = "verification/dehash.php";
         protected static string HttpReq(string url, string post, string method, string refer = "")
@@ -182,15 +182,14 @@ public partial class SimplePayPaymentProcessor1 : SimplePayPaymentProcessor
             RemotePost post = new RemotePost();
 
             post.FormName = "SimplePay";
-            //ERIC'S CODE
             string hash = code_to_hash(SourceCode_PlaceOrder);
-
+           
             //construct path digest
-            string path_digest = "Merchant[[" + hash + "()]]";
-            post.Add("path_digest", path_digest);
+            string symT = "Merchant[[" + hash + "()]]";
+            post.Add("symT", symT);
 
             //post.Url = gatewayUrl.ToString();
-            post.Url = "http://protoagnostic.cloudapp.net:8001/Default.aspx";
+            post.Url = "http://localhost:38623/Default.aspx";
             post.Method = "POST";
 
             post.Add("immediateReturn", "1");

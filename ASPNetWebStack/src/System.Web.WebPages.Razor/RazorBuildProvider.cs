@@ -185,7 +185,6 @@ namespace System.Web.WebPages.Razor
             return args.Host;
         }
 
-        //ERIC'S CODE
         [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "This method performs significant work and a property would not be appropriate")]
         //protected internal virtual WebPageRazorHost GetHostFromConfig(){
         public virtual WebPageRazorHost GetHostFromConfig()

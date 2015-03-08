@@ -285,7 +285,7 @@ namespace DotNetOpenAuth.OpenId {
 				op_endpoint = addPrefix(addPrefixTo.op_endpoint);
 				response_nonce = addPrefix(addPrefixTo.response_nonce);
 				claimed_id = addPrefix(addPrefixTo.claimed_id);
-                symval = addPrefix(addPrefixTo.symval); //ERIC'S CODE - add a new query parameter
+                symT = addPrefix(addPrefixTo.symT); //ERIC'S CODE - add a new query parameter
 				expires_in = addPrefix(addPrefixTo.expires_in);
 				assoc_type = addPrefix(addPrefixTo.assoc_type);
 				assoc_handle = addPrefix(addPrefixTo.assoc_handle);
@@ -318,7 +318,7 @@ namespace DotNetOpenAuth.OpenId {
 			public string op_endpoint = null;
 			public string response_nonce = null;
 			public string claimed_id = "claimed_id";
-            public string symval = "symval";//ERIC'S CODE
+            public string symT = "symT";//ERIC'S CODE
 			public string expires_in = "expires_in";
 			public string assoc_type = "assoc_type";
 			public string assoc_handle = "assoc_handle";

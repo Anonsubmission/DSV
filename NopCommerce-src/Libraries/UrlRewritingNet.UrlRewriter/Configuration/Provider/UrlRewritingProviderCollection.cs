@@ -16,7 +16,7 @@ namespace UrlRewritingNet.Configuration.Provider
                 string msg = string.Format("Provider must implement type {0}", typeof(UrlRewritingProvider).ToString());
                 throw new ArgumentException(msg, "provider");
             }
-            base.Add(provider); 
+            base.Add(provider);
         }
         public void CopyTo(UrlRewritingProvider[] providers, int index)
         {

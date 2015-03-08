@@ -70,7 +70,7 @@ namespace NopSolutions.NopCommerce.Web.Modules
                     paymentInfo.ShippingAddress = NopContext.Current.User.ShippingAddress;
                     paymentInfo.CustomerLanguage = NopContext.Current.WorkingLanguage;
                     paymentInfo.CustomerCurrency = NopContext.Current.WorkingCurrency;
-
+                    
                     int orderId = 0;
                     string result = OrderManager.PlaceOrder(paymentInfo, NopContext.Current.User, out orderId);
                     this.PaymentInfo = null;

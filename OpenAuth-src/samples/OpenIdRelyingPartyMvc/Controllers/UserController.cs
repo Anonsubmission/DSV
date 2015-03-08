@@ -66,24 +66,24 @@
             return Enumerable.Empty<KeyValuePair<string, string>>();
         }
 
-        //this function parses the symval string and returns an array of functions called in reverse-chronological order
+        //this function parses the symT string and returns an array of functions called in reverse-chronological order
         // A[HASH1(B[[HASH2()]])]
-        protected static Stack parse_symval(string symval)
+        protected static Stack parse_symT(string symT)
         {
             Stack callStack = new Stack();
 
-            int step = 0, start = 0, end = symval.Length-1;
+            int step = 0, start = 0, end = symT.Length-1;
             int c = 0, s = 0, s_end=0;
 
             while (start < end)
             {
                 step = 0;
-                c = (symval.IndexOf('(', start) == -1) ? int.MaxValue : symval.IndexOf('(', start);
-                s = (symval.IndexOf('[', start) == -1) ? int.MaxValue : symval.IndexOf('[', start);
+                c = (symT.IndexOf('(', start) == -1) ? int.MaxValue : symT.IndexOf('(', start);
+                s = (symT.IndexOf('[', start) == -1) ? int.MaxValue : symT.IndexOf('[', start);
 
                 if (c < s)
                 { //if ( is before [
-                    if (symval[c + 1] == '(') step = 2; // double '('
+                    if (symT[c + 1] == '(') step = 2; // double '('
                     else step = 1;
                     start += step;
                     end -= step;
@@ -91,13 +91,13 @@
                 else if (s < c)
                 { //if [ is before (
                     transaction cur = new transaction();
-                    if (symval[s + 1] == '[') step = 2; // double '['
+                    if (symT[s + 1] == '[') step = 2; // double '['
                     else step = 1;
                     if (c < int.MaxValue)
                     { // pattern: A[HASH(
                         cur.isEncrypted = (step == 1) ? false : true; //[[encrypted]] [not encrypted]
-                        cur.party = symval.Substring(start, s - start); //A[[HASH()]], a is party
-                        cur.function = symval.Substring(s + step, c - s - step); //A[[HASH()]] HASH is function
+                        cur.party = symT.Substring(start, s - start); //A[[HASH()]], a is party
+                        cur.function = symT.Substring(s + step, c - s - step); //A[[HASH()]] HASH is function
 
                         ////if one of the parties involved in the transaction is not known
                         //if (!Array.Exists(whitelist, element => element == cur.party))
@@ -108,8 +108,8 @@
                         //get the coverage field if the msg was encrypted
                         s_end=0;
                         if(step==2){
-                            s_end = (symval.LastIndexOf(']', end - 1) == -1) ? 0 : symval.LastIndexOf(']', end - 1);
-                            cur.coverage = (s_end == 0) ? "" : symval.Substring(s_end + 1, end - s_end - 1);
+                            s_end = (symT.LastIndexOf(']', end - 1) == -1) ? 0 : symT.LastIndexOf(']', end - 1);
+                            cur.coverage = (s_end == 0) ? "" : symT.Substring(s_end + 1, end - s_end - 1);
                         }
                         callStack.Push(cur);
                     }
@@ -156,19 +156,19 @@ public class GlobalState
 
 ";
 
-        //this function generates a C# model from a symval string
-        protected static string assemble_code(string symval, Dictionary<string, string> fields)
+        //this function generates a C# model from a symT string
+        protected static string assemble_code(string symT, Dictionary<string, string> fields)
         {
 
             string code = SourceCode_Global;
 
-            Stack callStack = parse_symval(symval);
+            Stack callStack = parse_symT(symT);
             transaction op_msg, rp_msg;
 
             op_msg = (transaction)callStack.Pop();
             rp_msg = (transaction)callStack.Pop();
 
-            code += "@@@@OP_PLACEHOLDER@@@@"; //we delay code insertion after verifying the signature of the symval is valid
+            code += "@@@@OP_PLACEHOLDER@@@@"; //we delay code insertion after verifying the signature of the symT is valid
 
             code += PositiveAssertionResponse.hash_to_code(rp_msg.function);
 
@@ -254,15 +254,15 @@ class PoirotMain
 ";
 
             //calculate what to havoc
-            bool symvalSigned = false;
+            bool symTSigned = false;
             string[] key_arr= op_msg.coverage.Split(',');
             if (op_msg.coverage != null)
             {
                 //findout where the signed fields are and havoc the rest
-                //coverage example: "claimed_id,identity,symval,assoc_handle,op_endpoint,response_nonce,return_to,ns.sreg,sreg.email"
+                //coverage example: "claimed_id,identity,symT,assoc_handle,op_endpoint,response_nonce,return_to,ns.sreg,sreg.email"
                 foreach(string key in key_arr){
                     //each key is a deterministic field
-                    if (key == "symval") symvalSigned = true;
+                    if (key == "symT") symTSigned = true;
                     else if (key == "return_to")
                     {
         //                public string _ReturnTo_Authority;
@@ -289,9 +289,9 @@ class PoirotMain
             //string a = "";
             string a = PositiveAssertionResponse.hash_to_code(op_msg.function);
 
-            //if symval is signed, we add op's code to our proof
+            //if symT is signed, we add op's code to our proof
             
-            code = (symvalSigned) ? Regex.Replace(code, "@@@@OP_PLACEHOLDER@@@@", PositiveAssertionResponse.hash_to_code(op_msg.function)) : "";
+            code = (symTSigned) ? Regex.Replace(code, "@@@@OP_PLACEHOLDER@@@@", PositiveAssertionResponse.hash_to_code(op_msg.function)) : "";
 
             code += @"
         CancellationToken x = default(CancellationToken);
@@ -371,11 +371,11 @@ class PoirotMain
                 return false;
         }
 
-        public static void generate_cs_file_from_symval(string symval, Dictionary<string, string> fields)
+        public static void generate_cs_file_from_symT(string symT, Dictionary<string, string> fields)
         {
             TimeSpan t1 = (DateTime.UtcNow - new DateTime(1970, 1, 1));
             
-            string content = assemble_code(symval, fields);
+            string content = assemble_code(symT, fields);
 
             TimeSpan t2 = (DateTime.UtcNow - new DateTime(1970, 1, 1));
 
@@ -404,17 +404,17 @@ class PoirotMain
             string mode;
             if (fields.TryGetValue("openid.mode", out mode))
             {
-                string symVal="";
-                fields.TryGetValue("openid.symval",out symVal);
+                string symT="";
+                fields.TryGetValue("openid.symT",out symT);
 
-                //first, we add RP's code onto our symval 
+                //first, we add RP's code onto our symT 
                 string hash_rp = PositiveAssertionResponse.code_to_hash(PositiveAuthenticationResponse.SourceCode_RP);
                 //((AuthenticationRequest)request).ProviderEndpoint.Authority + "[[" + PositiveAssertionResponse.hashvalue_op + "()]";
-                symVal = this.Request.Url.Authority + "[[" + hash_rp + "("+symVal+")]]";
+                symT = this.Request.Url.Authority + "[[" + hash_rp + "("+symT+")]]";
 
                 
 
-                generate_cs_file_from_symval(symVal, fields);
+                generate_cs_file_from_symT(symT, fields);
 
                 TimeSpan t1 = (DateTime.UtcNow - new DateTime(1970, 1, 1));
                 TimeSpan t2 = (DateTime.UtcNow - new DateTime(1970, 1, 1));
@@ -488,7 +488,6 @@ class PoirotMain
                         {
                             var request = await openid.CreateRequestAsync(Request.Form["openid_identifier"]);
 
-                            //Eric - add extension
                             var sregRequest = new ClaimsRequest();
                             sregRequest.Email = DemandLevel.Require;
                             request.AddExtension(sregRequest);

@@ -52,29 +52,6 @@ namespace NopSolutions.NopCommerce.Payment.Methods.Amazon
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            /*
-            NameValueCollection parameters = new NameValueCollection(Request.QueryString);
-
-            string return_url = parameters["redirect_uri"];
-            parameters.Remove("redirect_uri");
-            string old_hash = parameters["path_digest"];
-            string new_hash = oauth_req.code_to_hash(SourceCode_Pay);
-            string path_digest = "Facebook[[" + new_hash + "(" + old_hash + ")]]";
-            parameters["path_digest"] = path_digest;
-
-            Response.StatusCode = 302;
-            Response.Status = "302 Moved Temporarily";
-            Response.RedirectLocation = return_url;
-
-            var items = parameters.AllKeys.SelectMany(parameters.GetValues, (k, v) => new { key = k, value = v });
-            foreach (var item in items)
-            {
-                Response.RedirectLocation += "&"+ HttpUtility.UrlEncode(item.key) + "=" + HttpUtility.UrlEncode(item.value);
-
-            }
-            Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            Response.End();
-            */
         }
     }
 }

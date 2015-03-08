@@ -77,7 +77,7 @@ namespace DotNetOpenAuth.OpenId.ChannelElements {
 				signedMessage.SignedParameterOrder = this.GetSignedParameterOrder(signedMessage);
 
                 //ERIC'S CODE
-                ((PositiveAssertionResponse)message).SymvalIdentifier += signedMessage.SignedParameterOrder + "]";
+                ((PositiveAssertionResponse)message).SymTIdentifier += signedMessage.SignedParameterOrder + "]";
 
 				signedMessage.Signature = this.GetSignature(signedMessage, association);
 				return MessageProtections.TamperProtection;

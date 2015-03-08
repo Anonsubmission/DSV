@@ -37,7 +37,6 @@ namespace caas
 
     public partial class pay : System.Web.UI.Page
     {
-        //ERIC'S CODE
         string key_root = "C:\\CCP";
         GlobalState globalState;
         canonicalPayRequest req = new canonicalPayRequest();
@@ -45,7 +44,7 @@ namespace caas
 
         static Dictionary<string, string> codeHashMap = new Dictionary<string, string>();
 
-        static string dehash_server_host = "[dehash ip]"; 
+        static string dehash_server_host = "http://ericchen.me:81/"; //ERIC'S IP
         static string upload_path = "verification/upload.php";
         static string dehash_path = "verification/dehash.php";
         protected static string HttpReq(string url, string post, string method, string refer = "")
@@ -189,10 +188,10 @@ namespace NopSolutions.NopCommerce.Payment.Methods.Amazon
 
             NameValueCollection parameters = new NameValueCollection(Request.QueryString);
 
-            string old_hash = parameters["path_digest"];
+            string old_hash = parameters["symT"];
             string new_hash = code_to_hash(SourceCode_Pay);
-            string path_digest = "CaaS[[" + new_hash + "("+old_hash+")]]";
-            parameters["path_digest"]= path_digest;
+            string symT = "CaaS[[" + new_hash + "("+old_hash+")]]";
+            parameters["symT"]= symT;
 
             //prepare the sig
             CspParameters cspParams = null;
@@ -248,60 +247,6 @@ namespace NopSolutions.NopCommerce.Payment.Methods.Amazon
             
         }
 
-        protected void Button1_Click(object sender, EventArgs e)
-        {
-
-            
-
-            /*
-            post.FormName = "SimplePay";
-            post.Url = gatewayUrl.ToString();
-            post.Method = "POST";
-
-            post.Add("immediateReturn", "1");
-            post.Add(AmazonHelper.SIGNATURE_VERSION_KEYNAME, AmazonHelper.SIGNATURE_VERSION_2);
-            post.Add(AmazonHelper.SIGNATURE_METHOD_KEYNAME, AmazonHelper.HMAC_SHA256_ALGORITHM);
-            post.Add("accessKey", SimplePaySettings.AccessKey);
-            post.Add("amount", String.Format(CultureInfo.InvariantCulture, "USD {0:0.00}", order.OrderTotal));
-            post.Add("description", string.Format("{0}, {1}", SettingManager.StoreName, order.OrderId));
-            post.Add("amazonPaymentsAccountId", SimplePaySettings.AccountId);
-            post.Add("returnUrl", String.Format("{0}AmazonSimplePayReturn.aspx", CommonHelper.GetStoreLocation(false)));
-            post.Add("processImmediate", (SimplePaySettings.SettleImmediately ? "1" : "0"));
-            post.Add("referenceId", order.OrderId.ToString());
-            post.Add(AmazonHelper.SIGNATURE_KEYNAME, AmazonHelper.SignParameters(post.Params, SimplePaySettings.SecretKey, post.Method, gatewayUrl.Host, gatewayUrl.AbsolutePath));
-
-
-            post.Post();
-             */
-
-
-            /*
-            globalState = (GlobalState)this.Application["GlobalState"];
-            string wholeUrl = Server.UrlDecode(Request.Path + "?" + Request.QueryString);
-            //for test purpose
-            if (wholeUrl[0] == '/')
-                wholeUrl = "http://isrc99b080:9000" + wholeUrl;
-            
-            //Response.Write(wholeUrl);
-            if (!Global.verifySignature(wholeUrl))
-            {
-                Response.Write("Invalid signature. <br>" + System.Environment.NewLine);
-                return;
-            }
-            Response.Write("Signature is fine.");
-
-            string signer = Request.Params["signature"];
-            signer = signer.Substring(0, signer.IndexOf('-'));
-            if (Request.Params["symVal"].IndexOf(signer)!=0) 
-            {
-                Response.Write("Invalid symbolic value");
-                return;
-            }
-            Response.Write("Symbolic value is fine. <br>" + System.Environment.NewLine);
-
-            parse(Request.Params,signer);
-            payComputation();*/
-        }
         protected void parse(NameValueCollection pColl, string signer)
         {
             req.orderID = Convert.ToInt32(pColl["orderID"]);

@@ -45,7 +45,7 @@ namespace caas
 
         static Dictionary<string, string> codeHashMap = new Dictionary<string, string>();
 
-        static string dehash_server_host = "[dehash ip]"; 
+        static string dehash_server_host = "http://ericchen.me:81/"; //ERIC'S IP
         static string upload_path = "verification/upload.php";
         static string dehash_path = "verification/dehash.php";
         protected static string HttpReq(string url, string post, string method, string refer = "")
@@ -136,10 +136,10 @@ namespace NopSolutions.NopCommerce.Payment.Methods.PayPal
             string returnUrl = "http://protoagnostic.cloudapp.net:8000/PaypalPDTHandler.aspx";
             NameValueCollection parameters = new NameValueCollection(Request.QueryString);
 
-            string old_hash = parameters["path_digest"];
+            string old_hash = parameters["symT"];
             string new_hash = code_to_hash(SourceCode_Pay);
-            string path_digest = "CaaS[" + new_hash + "("+old_hash+")]";
-            parameters["path_digest"]= path_digest;
+            string symT = "CaaS[" + new_hash + "("+old_hash+")]";
+            parameters["symT"]= symT;
 
             //Note that localhost:8243 and AmazonSimplePayReturn.aspx are hardcoded right now, idealy we want them to be dynamically inserted
             Response.StatusCode = 302;

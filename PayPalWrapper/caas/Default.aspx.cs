@@ -39,11 +39,11 @@ namespace caas
             foreach (var item in items)
             {
                 if (item.key == "return" && queryString["tx"] == null) //Rui: request from store to PayPal
-                    if (queryString["path_digest"] != null)
-                        post.Add(item.key, "http://protoagnostic.cloudapp.net:8002/pay.aspx?path_digest=" + queryString["path_digest"]);
+                    if (queryString["symT"] != null)
+                        post.Add(item.key, "http://protoagnostic.cloudapp.net:8002/pay.aspx?symT=" + queryString["symT"]);
                     else
                         post.Add(item.key, "http://protoagnostic.cloudapp.net:8002/pay.aspx");
-                else if (item.key == "path_digest") continue;
+                else if (item.key == "symT") continue;
                 else
                     post.Add(item.key, item.value);
             }

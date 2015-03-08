@@ -171,7 +171,6 @@ namespace DotNetOpenAuth.AspNet.Clients {
 			return null;
 		}
 
-        //ERIC'S CODE -- dummy function please ignore
         protected override string QueryAccessToken_CCP(Uri returnUrl, string authorizationCode, string path_diguest)
         {
            return null;

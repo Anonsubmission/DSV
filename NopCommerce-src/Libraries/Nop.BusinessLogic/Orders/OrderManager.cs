@@ -66,7 +66,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
         /// <param name="os">New order status</param>
         /// <param name="notifyCustomer">True to notify customer</param>
         /// <returns>Order</returns>
-        protected static Order SetOrderStatus(int orderId, 
+        protected static Order SetOrderStatus(int orderId,
             OrderStatusEnum os, bool notifyCustomer)
         {
             var order = GetOrderById(orderId);
@@ -77,26 +77,26 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
 
                 OrderStatusEnum prevOrderStatus = order.OrderStatus;
 
-                var updatedOrder = UpdateOrder(order.OrderId, 
-                    order.OrderGuid, 
-                    order.CustomerId, 
+                var updatedOrder = UpdateOrder(order.OrderId,
+                    order.OrderGuid,
+                    order.CustomerId,
                     order.CustomerLanguageId,
-                    order.CustomerTaxDisplayType, 
+                    order.CustomerTaxDisplayType,
                     order.CustomerIP,
-                    order.OrderSubtotalInclTax, 
-                    order.OrderSubtotalExclTax, 
+                    order.OrderSubtotalInclTax,
+                    order.OrderSubtotalExclTax,
                     order.OrderShippingInclTax,
-                    order.OrderShippingExclTax, 
+                    order.OrderShippingExclTax,
                     order.PaymentMethodAdditionalFeeInclTax,
                     order.PaymentMethodAdditionalFeeExclTax,
                     order.TaxRates,
-                    order.OrderTax, 
+                    order.OrderTax,
                     order.OrderTotal,
                     order.RefundedAmount,
                     order.OrderDiscount,
-                    order.OrderSubtotalInclTaxInCustomerCurrency, 
+                    order.OrderSubtotalInclTaxInCustomerCurrency,
                     order.OrderSubtotalExclTaxInCustomerCurrency,
-                    order.OrderShippingInclTaxInCustomerCurrency, 
+                    order.OrderShippingInclTaxInCustomerCurrency,
                     order.OrderShippingExclTaxInCustomerCurrency,
                     order.PaymentMethodAdditionalFeeInclTaxInCustomerCurrency,
                     order.PaymentMethodAdditionalFeeExclTaxInCustomerCurrency,
@@ -104,59 +104,59 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                     order.OrderTaxInCustomerCurrency,
                     order.OrderTotalInCustomerCurrency,
                     order.OrderDiscountInCustomerCurrency,
-                    order.CheckoutAttributeDescription, 
-                    order.CheckoutAttributesXml, 
+                    order.CheckoutAttributeDescription,
+                    order.CheckoutAttributesXml,
                     order.CustomerCurrencyCode,
                     order.OrderWeight,
-                    order.AffiliateId, 
+                    order.AffiliateId,
                     os,
                     order.AllowStoringCreditCardNumber,
                     order.CardType,
-                    order.CardName, order.CardNumber, 
+                    order.CardName, order.CardNumber,
                     order.MaskedCreditCardNumber,
-                    order.CardCvv2, order.CardExpirationMonth, 
+                    order.CardCvv2, order.CardExpirationMonth,
                     order.CardExpirationYear,
-                    order.PaymentMethodId, 
+                    order.PaymentMethodId,
                     order.PaymentMethodName,
                     order.AuthorizationTransactionId,
-                    order.AuthorizationTransactionCode, 
+                    order.AuthorizationTransactionCode,
                     order.AuthorizationTransactionResult,
-                    order.CaptureTransactionId, 
+                    order.CaptureTransactionId,
                     order.CaptureTransactionResult,
-                    order.SubscriptionTransactionId, 
-                    order.PurchaseOrderNumber, 
+                    order.SubscriptionTransactionId,
+                    order.PurchaseOrderNumber,
                     order.PaymentStatus, order.PaidDate,
-                    order.BillingFirstName, 
-                    order.BillingLastName, 
+                    order.BillingFirstName,
+                    order.BillingLastName,
                     order.BillingPhoneNumber,
-                    order.BillingEmail, 
-                    order.BillingFaxNumber, 
-                    order.BillingCompany, 
+                    order.BillingEmail,
+                    order.BillingFaxNumber,
+                    order.BillingCompany,
                     order.BillingAddress1,
-                    order.BillingAddress2, 
+                    order.BillingAddress2,
                     order.BillingCity,
-                    order.BillingStateProvince, 
+                    order.BillingStateProvince,
                     order.BillingStateProvinceId,
                     order.BillingZipPostalCode,
-                    order.BillingCountry, 
-                    order.BillingCountryId, 
+                    order.BillingCountry,
+                    order.BillingCountryId,
                     order.ShippingStatus,
-                    order.ShippingFirstName, 
+                    order.ShippingFirstName,
                     order.ShippingLastName,
                     order.ShippingPhoneNumber,
-                    order.ShippingEmail, 
+                    order.ShippingEmail,
                     order.ShippingFaxNumber,
                     order.ShippingCompany,
                     order.ShippingAddress1,
-                    order.ShippingAddress2, 
+                    order.ShippingAddress2,
                     order.ShippingCity,
-                    order.ShippingStateProvince, 
+                    order.ShippingStateProvince,
                     order.ShippingStateProvinceId,
                     order.ShippingZipPostalCode,
                     order.ShippingCountry,
                     order.ShippingCountryId,
                     order.ShippingMethod,
-                    order.ShippingRateComputationMethodId, 
+                    order.ShippingRateComputationMethodId,
                     order.ShippedDate,
                     order.DeliveryDate,
                     order.TrackingNumber,
@@ -224,7 +224,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                    OrderManager.GiftCards_Activated.Value == updatedOrder.OrderStatus)
                 {
                     var giftCards = GetAllGiftCards(order.OrderId,
-                        null, null,null,null,null,null,false, string.Empty);
+                        null, null, null, null, null, null, false, string.Empty);
                     foreach (var gc in giftCards)
                     {
                         bool isRecipientNotified = gc.IsRecipientNotified;
@@ -251,7 +251,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                                 {
                                 }
                                 break;
-                            default: 
+                            default:
                                 break;
                         }
 
@@ -297,7 +297,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
 
             if (order.OrderStatus == OrderStatusEnum.Pending)
             {
-                if (order.PaymentStatus == PaymentStatusEnum.Authorized || 
+                if (order.PaymentStatus == PaymentStatusEnum.Authorized ||
                     order.PaymentStatus == PaymentStatusEnum.Paid)
                 {
                     order = SetOrderStatus(orderId, OrderStatusEnum.Processing, false);
@@ -313,7 +313,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                 }
             }
 
-            if (order.OrderStatus != OrderStatusEnum.Cancelled && 
+            if (order.OrderStatus != OrderStatusEnum.Cancelled &&
                 order.OrderStatus != OrderStatusEnum.Complete)
             {
                 if (order.PaymentStatus == PaymentStatusEnum.Paid)
@@ -340,7 +340,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                     order.TaxRatesInCustomerCurrency,
                     order.OrderTaxInCustomerCurrency, order.OrderTotalInCustomerCurrency,
                     order.OrderDiscountInCustomerCurrency,
-                    order.CheckoutAttributeDescription, order.CheckoutAttributesXml, 
+                    order.CheckoutAttributeDescription, order.CheckoutAttributesXml,
                     order.CustomerCurrencyCode, order.OrderWeight,
                     order.AffiliateId, order.OrderStatus, order.AllowStoringCreditCardNumber, order.CardType,
                     order.CardName, order.CardNumber, order.MaskedCreditCardNumber,
@@ -430,7 +430,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                    order.OrderShippingInclTaxInCustomerCurrency, order.OrderShippingExclTaxInCustomerCurrency,
                    order.PaymentMethodAdditionalFeeInclTaxInCustomerCurrency, order.PaymentMethodAdditionalFeeExclTaxInCustomerCurrency,
                    order.TaxRatesInCustomerCurrency, order.OrderTaxInCustomerCurrency,
-                   order.OrderTotalInCustomerCurrency, 
+                   order.OrderTotalInCustomerCurrency,
                    order.OrderDiscountInCustomerCurrency,
                    order.CheckoutAttributeDescription, order.CheckoutAttributesXml,
                    order.CustomerCurrencyCode, order.OrderWeight,
@@ -452,7 +452,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                     order.ShippingStateProvince, order.ShippingStateProvinceId, order.ShippingZipPostalCode,
                     order.ShippingCountry, order.ShippingCountryId,
                     order.ShippingMethod, order.ShippingRateComputationMethodId,
-                    order.ShippedDate, order.DeliveryDate, order.TrackingNumber, 
+                    order.ShippedDate, order.DeliveryDate, order.TrackingNumber,
                     order.VatNumber, true, order.CreatedOn);
             }
         }
@@ -468,7 +468,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
         /// <param name="ss">Order shippment status; null to load all orders</param>
         /// <returns>Order collection</returns>
         public static List<Order> SearchOrders(DateTime? startTime, DateTime? endTime,
-            string customerEmail, OrderStatusEnum? os, PaymentStatusEnum? ps, 
+            string customerEmail, OrderStatusEnum? os, PaymentStatusEnum? ps,
             ShippingStatusEnum? ss)
         {
             return SearchOrders(startTime, endTime,
@@ -517,7 +517,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                         select o;
 
             var orders = query.ToList();
-            
+
             //filter by GUID. Filter in BLL because EF doesn't support casting of GUID to string
             if (!String.IsNullOrEmpty(orderGuid))
             {
@@ -558,13 +558,13 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
         /// <param name="authorizationTransactionId">Authorization transaction identifier</param>
         /// <param name="paymentMethodId">Payment method identifier</param>
         /// <returns>Order</returns>
-        public static Order GetOrderByAuthorizationTransactionIdAndPaymentMethodId(string authorizationTransactionId, 
+        public static Order GetOrderByAuthorizationTransactionIdAndPaymentMethodId(string authorizationTransactionId,
             int paymentMethodId)
         {
             var context = ObjectContextHelper.CurrentObjectContext;
             var query = from o in context.Orders
                         orderby o.CreatedOn descending
-                        where o.AuthorizationTransactionId == authorizationTransactionId && 
+                        where o.AuthorizationTransactionId == authorizationTransactionId &&
                         o.PaymentMethodId == paymentMethodId
                         select o;
             var order = query.FirstOrDefault();
@@ -852,7 +852,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                 trackingNumber = string.Empty;
             if (vatNumber == null)
                 vatNumber = string.Empty;
-            
+
             taxRates = CommonHelper.EnsureMaximumLength(taxRates, 4000);
             taxRatesInCustomerCurrency = CommonHelper.EnsureMaximumLength(taxRatesInCustomerCurrency, 4000);
 
@@ -1004,7 +1004,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
             //raise event             
             EventContext.Current.OnOrderCreated(null,
                 new OrderEventArgs() { Order = order });
-            
+
             return order;
         }
 
@@ -1348,7 +1348,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
             //raise event             
             EventContext.Current.OnOrderUpdated(null,
                 new OrderEventArgs() { Order = order });
-            
+
             return order;
         }
 
@@ -1374,7 +1374,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                    order.TaxRatesInCustomerCurrency, order.OrderTaxInCustomerCurrency,
                    order.OrderTotalInCustomerCurrency,
                    order.OrderDiscountInCustomerCurrency,
-                   order.CheckoutAttributeDescription, order.CheckoutAttributesXml, 
+                   order.CheckoutAttributeDescription, order.CheckoutAttributesXml,
                    order.CustomerCurrencyCode, order.OrderWeight,
                    order.AffiliateId, order.OrderStatus, order.AllowStoringCreditCardNumber, order.CardType,
                    order.CardName, order.CardNumber, order.MaskedCreditCardNumber,
@@ -1400,7 +1400,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
         }
 
         #endregion
-        
+
         #region Orders product variants
 
         /// <summary>
@@ -1476,7 +1476,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
             int? customerId, DateTime? startTime, DateTime? endTime,
             OrderStatusEnum? os, PaymentStatusEnum? ps, ShippingStatusEnum? ss)
         {
-            return GetAllOrderProductVariants(orderId, customerId, startTime, 
+            return GetAllOrderProductVariants(orderId, customerId, startTime,
                 endTime, os, ps, ss, false);
         }
 
@@ -1815,7 +1815,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
         /// <param name="displayToCustomer">A value indicating whether the customer can see a note</param>
         /// <param name="createdOn">The date and time of order note creation</param>
         /// <returns>Order note</returns>
-        public static OrderNote InsertOrderNote(int orderId, string note, 
+        public static OrderNote InsertOrderNote(int orderId, string note,
             bool displayToCustomer, DateTime createdOn)
         {
             note = CommonHelper.EnsureMaximumLength(note, 4000);
@@ -1842,7 +1842,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
         /// <param name="displayToCustomer">A value indicating whether the customer can see a note</param>
         /// <param name="createdOn">The date and time of order note creation</param>
         /// <returns>Order note</returns>
-        public static OrderNote UpdateOrderNote(int orderNoteId, int orderId, 
+        public static OrderNote UpdateOrderNote(int orderNoteId, int orderId,
             string note, bool displayToCustomer, DateTime createdOn)
         {
             note = CommonHelper.EnsureMaximumLength(note, 4000);
@@ -1988,7 +1988,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
         /// <param name="recordsToReturn">Number of products to return</param>
         /// <param name="orderBy">1 - order by total count, 2 - Order by total amount</param>
         /// <returns>Result</returns>
-        public static List<BestSellersReportLine> BestSellersReport(int lastDays, 
+        public static List<BestSellersReportLine> BestSellersReport(int lastDays,
             int recordsToReturn, int orderBy)
         {
             var context = ObjectContextHelper.CurrentObjectContext;
@@ -2004,7 +2004,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
         /// <param name="startTime">Start date</param>
         /// <param name="endTime">End date</param>
         /// <returns>Result</returns>
-        public static OrderAverageReportLine GetOrderAverageReportLine(OrderStatusEnum os, 
+        public static OrderAverageReportLine GetOrderAverageReportLine(OrderStatusEnum os,
             DateTime? startTime, DateTime? endTime)
         {
             int orderStatusId = (int)os;
@@ -2013,7 +2013,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
             var item = context.Sp_OrderAverageReport(startTime, endTime, orderStatusId);
             return item;
         }
-        
+
         /// <summary>
         /// Get order average report
         /// </summary>
@@ -2071,7 +2071,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
         /// <param name="ps">Order payment status; null to load all orders</param>
         /// <param name="ss">Order shippment status; null to load all orders</param>
         /// <returns>IdataReader</returns>
-        public static OrderIncompleteReportLine GetOrderReport(OrderStatusEnum? os, 
+        public static OrderIncompleteReportLine GetOrderReport(OrderStatusEnum? os,
             PaymentStatusEnum? ps, ShippingStatusEnum? ss)
         {
             int? orderStatusId = null;
@@ -2090,7 +2090,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
             var item = context.Sp_OrderIncompleteReport(orderStatusId, paymentStatusId, shippmentStatusId);
             return item;
         }
-       
+
         #endregion
 
         #region Recurring payments
@@ -2208,11 +2208,11 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
         /// <param name="initialOrderId">The initial order identifier; 0 to load all records</param>
         /// <param name="initialOrderStatus">Initial order status identifier; null to load all records</param>
         /// <returns>Recurring payment collection</returns>
-        public static List<RecurringPayment> SearchRecurringPayments(int customerId, 
+        public static List<RecurringPayment> SearchRecurringPayments(int customerId,
             int initialOrderId, OrderStatusEnum? initialOrderStatus)
         {
             bool showHidden = NopContext.Current.IsAdmin;
-            return SearchRecurringPayments(showHidden, 
+            return SearchRecurringPayments(showHidden,
                 customerId, initialOrderId, initialOrderStatus);
         }
 
@@ -2230,7 +2230,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
             int? initialOrderStatusId = null;
             if (initialOrderStatus.HasValue)
                 initialOrderStatusId = (int)initialOrderStatus.Value;
-            
+
             var context = ObjectContextHelper.CurrentObjectContext;
 
             var recurringPayments = context.Sp_RecurringPaymentLoadAll(showHidden,
@@ -2328,7 +2328,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
         /// <param name="recurringPaymentId">The recurring payment identifier; 0 to load all records</param>
         /// <param name="orderId">The order identifier; 0 to load all records</param>
         /// <returns>Recurring payment history collection</returns>
-        public static List<RecurringPaymentHistory> SearchRecurringPaymentHistory(int recurringPaymentId, 
+        public static List<RecurringPaymentHistory> SearchRecurringPaymentHistory(int recurringPaymentId,
             int orderId)
         {
             var context = ObjectContextHelper.CurrentObjectContext;
@@ -2579,7 +2579,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
         /// <param name="createdOn">A date and time of instance creation</param>
         /// <returns>Gift card usage history entry</returns>
         public static GiftCardUsageHistory InsertGiftCardUsageHistory(int giftCardId,
-            int customerId, int orderId, decimal usedValue, 
+            int customerId, int orderId, decimal usedValue,
             decimal usedValueInCustomerCurrency, DateTime createdOn)
         {
             var context = ObjectContextHelper.CurrentObjectContext;
@@ -2691,7 +2691,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                 pageIndex = 0;
             if (pageIndex == int.MaxValue)
                 pageIndex = int.MaxValue - 1;
-            
+
             var context = ObjectContextHelper.CurrentObjectContext;
 
             var rewardPointsHistoryEntries = context.Sp_RewardPointsHistoryLoadAll(customerId,
@@ -2864,7 +2864,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
             var returnRequest = query.SingleOrDefault();
             return returnRequest;
         }
-        
+
         /// <summary>
         /// Deletes a return request
         /// </summary>
@@ -2889,7 +2889,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
         /// <param name="orderProductVariantId">Order product variant identifier; null to load all entries</param>
         /// <param name="rs">Return status; null to load all entries</param>
         /// <returns>Return requests</returns>
-        public static List<ReturnRequest> SearchReturnRequests(int customerId, 
+        public static List<ReturnRequest> SearchReturnRequests(int customerId,
             int orderProductVariantId, ReturnStatusEnum? rs)
         {
             int? returnStatusId = null;
@@ -2924,8 +2924,8 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
         /// <param name="updatedOn">The date and time of entity update</param>
         /// <returns>Return request</returns>
         public static ReturnRequest InsertReturnRequest(int orderProductVariantId,
-            int quantity, int customerId, string reasonForReturn, 
-            string requestedAction, string customerComments, 
+            int quantity, int customerId, string reasonForReturn,
+            string requestedAction, string customerComments,
             string staffNotes, ReturnStatusEnum returnStatus,
             DateTime createdOn, DateTime updatedOn)
         {
@@ -2970,7 +2970,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
         public static ReturnRequest UpdateReturnRequest(int returnRequestId, int orderProductVariantId,
             int quantity, int customerId, string reasonForReturn,
             string requestedAction, string customerComments,
-            string staffNotes,  ReturnStatusEnum returnStatus,
+            string staffNotes, ReturnStatusEnum returnStatus,
             DateTime createdOn, DateTime updatedOn)
         {
             reasonForReturn = CommonHelper.EnsureMaximumLength(reasonForReturn, 400);
@@ -3121,7 +3121,8 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
         /// <param name="customer">Customer</param>
         /// <param name="orderId">Order identifier</param>
         /// <returns>The error status, or String.Empty if no errors</returns>
-        public static string PlaceOrder(PaymentInfo paymentInfo, Customer customer, 
+        /// ERIC'S CODE - place order function
+        public static string PlaceOrder(PaymentInfo paymentInfo, Customer customer,
             out int orderId)
         {
             var orderGuid = Guid.NewGuid();
@@ -3136,7 +3137,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
         /// <param name="orderGuid">Order GUID to use</param>
         /// <param name="orderId">Order identifier</param>
         /// <returns>The error status, or String.Empty if no errors</returns>
-        public static string PlaceOrder(PaymentInfo paymentInfo, Customer customer, 
+        public static string PlaceOrder(PaymentInfo paymentInfo, Customer customer,
             Guid orderGuid, out int orderId)
         {
             orderId = 0;
@@ -3190,7 +3191,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
 
                 if (paymentInfo.CreditCardCvv2 == null)
                     paymentInfo.CreditCardCvv2 = string.Empty;
-                
+
                 if (paymentInfo.CreditCardName == null)
                     paymentInfo.CreditCardName = string.Empty;
                 paymentInfo.CreditCardName = CommonHelper.EnsureMaximumLength(paymentInfo.CreditCardName, 100);
@@ -3226,7 +3227,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                     foreach (var sci in cart)
                     {
                         var sciWarnings = ShoppingCartManager.GetShoppingCartItemWarnings(sci.ShoppingCartType,
-                            sci.ProductVariantId, sci.AttributesXml, 
+                            sci.ProductVariantId, sci.AttributesXml,
                             sci.CustomerEnteredPrice, sci.Quantity);
 
                         if (sciWarnings.Count > 0)
@@ -3282,13 +3283,13 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                 {
                     string subTotalError1 = ShoppingCartManager.GetShoppingCartSubTotal(cart, customer,
                         true, out orderSubTotalInclTax);
-                    
+
                     string subTotalError2 = ShoppingCartManager.GetShoppingCartSubTotal(cart, customer,
                         false, out orderSubTotalExclTax);
-                    
+
                     if (!String.IsNullOrEmpty(subTotalError1) || !String.IsNullOrEmpty(subTotalError2))
                         throw new NopException("Sub total couldn't be calculated");
-                    
+
                     //in customer currency
                     orderSubtotalInclTaxInCustomerCurrency = CurrencyManager.ConvertCurrency(orderSubTotalInclTax, CurrencyManager.PrimaryStoreCurrency, paymentInfo.CustomerCurrency);
                     orderSubtotalExclTaxInCustomerCurrency = CurrencyManager.ConvertCurrency(orderSubTotalExclTax, CurrencyManager.PrimaryStoreCurrency, paymentInfo.CustomerCurrency);
@@ -3456,7 +3457,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
 
                     orderTotal = ShoppingCartManager.GetShoppingCartTotal(cart,
                         paymentInfo.PaymentMethodId, customer,
-                        out orderDiscountAmount, out orderAppliedDiscount, 
+                        out orderDiscountAmount, out orderAppliedDiscount,
                         out appliedGiftCards, useRewardPoints,
                         out redeemedRewardPoints, out redeemedRewardPointsAmount);
                     if (!orderTotal.HasValue)
@@ -3469,7 +3470,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                     //in customer currency
                     orderDiscountInCustomerCurrency = CurrencyManager.ConvertCurrency(orderDiscountAmount,
                         CurrencyManager.PrimaryStoreCurrency, paymentInfo.CustomerCurrency);
-                    orderTotalInCustomerCurrency = CurrencyManager.ConvertCurrency(orderTotal.Value, 
+                    orderTotalInCustomerCurrency = CurrencyManager.ConvertCurrency(orderTotal.Value,
                         CurrencyManager.PrimaryStoreCurrency, paymentInfo.CustomerCurrency);
                 }
                 else
@@ -3668,7 +3669,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                 {
                     isRecurringShoppingCart = true;
                 }
-                
+
                 //process payment
                 if (!paymentInfo.IsRecurringPayment)
                 {
@@ -3897,13 +3898,13 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                             foreach (var opv in initialOrderProductVariants)
                             {
                                 //save item
-                               var newOpv = InsertOrderProductVariant(Guid.NewGuid(), order.OrderId,
-                                    opv.ProductVariantId, opv.UnitPriceInclTax, opv.UnitPriceExclTax,
-                                    opv.PriceInclTax, opv.PriceExclTax,
-                                    opv.UnitPriceInclTaxInCustomerCurrency, opv.UnitPriceExclTaxInCustomerCurrency,
-                                    opv.PriceInclTaxInCustomerCurrency, opv.PriceExclTaxInCustomerCurrency,
-                                    opv.AttributeDescription, opv.AttributesXml, opv.Quantity, opv.DiscountAmountInclTax,
-                                    opv.DiscountAmountExclTax, 0, false, 0);
+                                var newOpv = InsertOrderProductVariant(Guid.NewGuid(), order.OrderId,
+                                     opv.ProductVariantId, opv.UnitPriceInclTax, opv.UnitPriceExclTax,
+                                     opv.PriceInclTax, opv.PriceExclTax,
+                                     opv.UnitPriceInclTaxInCustomerCurrency, opv.UnitPriceExclTaxInCustomerCurrency,
+                                     opv.PriceInclTaxInCustomerCurrency, opv.PriceExclTaxInCustomerCurrency,
+                                     opv.AttributeDescription, opv.AttributesXml, opv.Quantity, opv.DiscountAmountInclTax,
+                                     opv.DiscountAmountExclTax, 0, false, 0);
 
                                 //gift cards
                                 if (opv.ProductVariant.IsGiftCard)
@@ -4054,7 +4055,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                         //raise event             
                         EventContext.Current.OnOrderPlaced(null,
                             new OrderEventArgs() { Order = order });
-            
+
                     }
                 }
             }
@@ -4078,13 +4079,13 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
         public static void ReOrder(int orderId)
         {
             var order = GetOrderById(orderId);
-            if(order != null)
+            if (order != null)
             {
                 foreach (var orderProductVariant in order.OrderProductVariants)
                 {
-                    ShoppingCartManager.AddToCart(ShoppingCartTypeEnum.ShoppingCart, 
-                        orderProductVariant.ProductVariantId, 
-                        orderProductVariant.AttributesXml, 
+                    ShoppingCartManager.AddToCart(ShoppingCartTypeEnum.ShoppingCart,
+                        orderProductVariant.ProductVariantId,
+                        orderProductVariant.AttributesXml,
                         orderProductVariant.UnitPriceExclTax,
                         orderProductVariant.Quantity);
                 }
@@ -4160,7 +4161,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
         /// </summary>
         /// <param name="recurringPaymentId">Recurring payment identifier</param>
         /// <param name="throwException">A value indicating whether to throw the exception after an error has occupied.</param>
-        public static RecurringPayment CancelRecurringPayment(int recurringPaymentId, 
+        public static RecurringPayment CancelRecurringPayment(int recurringPaymentId,
             bool throwException)
         {
             var recurringPayment = GetRecurringPaymentById(recurringPaymentId);
@@ -4179,7 +4180,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                         return recurringPayment;
 
                     //old info from placing order
-                    var cancelPaymentResult = new CancelPaymentResult();                    
+                    var cancelPaymentResult = new CancelPaymentResult();
                     cancelPaymentResult.AuthorizationTransactionId = initialOrder.AuthorizationTransactionId;
                     cancelPaymentResult.CaptureTransactionId = initialOrder.CaptureTransactionId;
                     cancelPaymentResult.SubscriptionTransactionId = initialOrder.SubscriptionTransactionId;
@@ -4287,7 +4288,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                 order.TaxRatesInCustomerCurrency, order.OrderTaxInCustomerCurrency,
                 order.OrderTotalInCustomerCurrency,
                 order.OrderDiscountInCustomerCurrency,
-                order.CheckoutAttributeDescription, order.CheckoutAttributesXml, 
+                order.CheckoutAttributeDescription, order.CheckoutAttributesXml,
                 order.CustomerCurrencyCode, order.OrderWeight,
                 order.AffiliateId, order.OrderStatus, order.AllowStoringCreditCardNumber, order.CardType,
                 order.CardName, order.CardNumber, order.MaskedCreditCardNumber,
@@ -4308,7 +4309,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                 order.ShippingStateProvince, order.ShippingStateProvinceId, order.ShippingZipPostalCode,
                 order.ShippingCountry, order.ShippingCountryId,
                 order.ShippingMethod, order.ShippingRateComputationMethodId, shippedDate,
-                order.DeliveryDate, order.TrackingNumber, order.VatNumber, 
+                order.DeliveryDate, order.TrackingNumber, order.VatNumber,
                 order.Deleted, order.CreatedOn);
 
             InsertOrderNote(order.OrderId, string.Format("Order has been shipped"), false, DateTime.UtcNow);
@@ -4371,7 +4372,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                 order.OrderShippingInclTaxInCustomerCurrency, order.OrderShippingExclTaxInCustomerCurrency,
                 order.PaymentMethodAdditionalFeeInclTaxInCustomerCurrency, order.PaymentMethodAdditionalFeeExclTaxInCustomerCurrency,
                 order.TaxRatesInCustomerCurrency, order.OrderTaxInCustomerCurrency,
-                order.OrderTotalInCustomerCurrency, 
+                order.OrderTotalInCustomerCurrency,
                 order.OrderDiscountInCustomerCurrency,
                 order.CheckoutAttributeDescription, order.CheckoutAttributesXml,
                 order.CustomerCurrencyCode, order.OrderWeight,
@@ -4394,7 +4395,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                 order.ShippingStateProvince, order.ShippingStateProvinceId, order.ShippingZipPostalCode,
                 order.ShippingCountry, order.ShippingCountryId,
                 order.ShippingMethod, order.ShippingRateComputationMethodId, order.ShippedDate,
-                deliveryDate, order.TrackingNumber, order.VatNumber, 
+                deliveryDate, order.TrackingNumber, order.VatNumber,
                 order.Deleted, order.CreatedOn);
 
             InsertOrderNote(order.OrderId, string.Format("Order has been delivered"), false, DateTime.UtcNow);
@@ -4443,19 +4444,19 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
 
             if (!CanCancelOrder(order))
                 throw new NopException("Can not do cancel for order.");
-            
+
             //Cancel order
             order = SetOrderStatus(order.OrderId, OrderStatusEnum.Cancelled, notifyCustomer);
 
             InsertOrderNote(order.OrderId, string.Format("Order has been cancelled"), false, DateTime.UtcNow);
-            
+
             //cancel recurring payments
             var recurringPayments = SearchRecurringPayments(0, order.OrderId, null);
             foreach (var rp in recurringPayments)
             {
                 CancelRecurringPayment(rp.RecurringPaymentId, false);
             }
-                
+
             //Adjust inventory
             foreach (var opv in order.OrderProductVariants)
                 ProductManager.AdjustInventory(opv.ProductVariantId, false, opv.Quantity, opv.AttributesXml);
@@ -4502,7 +4503,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                    order.OrderShippingInclTaxInCustomerCurrency, order.OrderShippingExclTaxInCustomerCurrency,
                    order.PaymentMethodAdditionalFeeInclTaxInCustomerCurrency, order.PaymentMethodAdditionalFeeExclTaxInCustomerCurrency,
                    order.TaxRatesInCustomerCurrency, order.OrderTaxInCustomerCurrency,
-                   order.OrderTotalInCustomerCurrency, 
+                   order.OrderTotalInCustomerCurrency,
                    order.OrderDiscountInCustomerCurrency,
                    order.CheckoutAttributeDescription, order.CheckoutAttributesXml,
                    order.CustomerCurrencyCode, order.OrderWeight,
@@ -4513,7 +4514,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                    order.AuthorizationTransactionId,
                    order.AuthorizationTransactionCode, order.AuthorizationTransactionResult,
                    order.CaptureTransactionId, order.CaptureTransactionResult,
-                   order.SubscriptionTransactionId, order.PurchaseOrderNumber, 
+                   order.SubscriptionTransactionId, order.PurchaseOrderNumber,
                    PaymentStatusEnum.Authorized, order.PaidDate,
                    order.BillingFirstName, order.BillingLastName, order.BillingPhoneNumber,
                    order.BillingEmail, order.BillingFaxNumber, order.BillingCompany, order.BillingAddress1,
@@ -4601,9 +4602,9 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                         order.OrderShippingInclTaxInCustomerCurrency, order.OrderShippingExclTaxInCustomerCurrency,
                         order.PaymentMethodAdditionalFeeInclTaxInCustomerCurrency, order.PaymentMethodAdditionalFeeExclTaxInCustomerCurrency,
                         order.TaxRatesInCustomerCurrency, order.OrderTaxInCustomerCurrency,
-                        order.OrderTotalInCustomerCurrency, 
+                        order.OrderTotalInCustomerCurrency,
                         order.OrderDiscountInCustomerCurrency,
-                        order.CheckoutAttributeDescription, order.CheckoutAttributesXml, 
+                        order.CheckoutAttributeDescription, order.CheckoutAttributesXml,
                         order.CustomerCurrencyCode, order.OrderWeight,
                         order.AffiliateId, order.OrderStatus, order.AllowStoringCreditCardNumber,
                         order.CardType, order.CardName, order.CardNumber, order.MaskedCreditCardNumber,
@@ -4667,8 +4668,8 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
             if (order.OrderStatus == OrderStatusEnum.Cancelled)
                 return false;
 
-            if (order.PaymentStatus == PaymentStatusEnum.Paid || 
-                order.PaymentStatus == PaymentStatusEnum.Refunded || 
+            if (order.PaymentStatus == PaymentStatusEnum.Paid ||
+                order.PaymentStatus == PaymentStatusEnum.Refunded ||
                 order.PaymentStatus == PaymentStatusEnum.Voided)
                 return false;
 
@@ -4700,7 +4701,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                     order.TaxRatesInCustomerCurrency, order.OrderTaxInCustomerCurrency,
                     order.OrderTotalInCustomerCurrency,
                     order.OrderDiscountInCustomerCurrency,
-                    order.CheckoutAttributeDescription, order.CheckoutAttributesXml, 
+                    order.CheckoutAttributeDescription, order.CheckoutAttributesXml,
                     order.CustomerCurrencyCode, order.OrderWeight,
                     order.AffiliateId, order.OrderStatus, order.AllowStoringCreditCardNumber, order.CardType,
                     order.CardName, order.CardNumber, order.MaskedCreditCardNumber,
@@ -4765,7 +4766,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
             var order = GetOrderById(orderId);
             if (order == null)
                 return order;
-            
+
             if (!CanRefund(order))
                 throw new NopException("Can not do refund for order.");
 
@@ -4908,7 +4909,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                    order.TaxRatesInCustomerCurrency, order.OrderTaxInCustomerCurrency,
                    order.OrderTotalInCustomerCurrency,
                    order.OrderDiscountInCustomerCurrency,
-                   order.CheckoutAttributeDescription, order.CheckoutAttributesXml, 
+                   order.CheckoutAttributeDescription, order.CheckoutAttributesXml,
                    order.CustomerCurrencyCode, order.OrderWeight,
                    order.AffiliateId, order.OrderStatus, order.AllowStoringCreditCardNumber, order.CardType,
                    order.CardName, order.CardNumber, order.MaskedCreditCardNumber,
@@ -4963,7 +4964,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
             if (amountToRefund > canBeRefunded)
                 return false;
 
-            if ((order.PaymentStatus == PaymentStatusEnum.Paid || 
+            if ((order.PaymentStatus == PaymentStatusEnum.Paid ||
                 order.PaymentStatus == PaymentStatusEnum.PartiallyRefunded) &&
                 PaymentManager.CanPartiallyRefund(order.PaymentMethodId))
                 return true;
@@ -5225,7 +5226,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                         order.TaxRatesInCustomerCurrency, order.OrderTaxInCustomerCurrency,
                         order.OrderTotalInCustomerCurrency,
                         order.OrderDiscountInCustomerCurrency,
-                        order.CheckoutAttributeDescription, order.CheckoutAttributesXml, 
+                        order.CheckoutAttributeDescription, order.CheckoutAttributesXml,
                         order.CustomerCurrencyCode, order.OrderWeight,
                         order.AffiliateId, order.OrderStatus, order.AllowStoringCreditCardNumber,
                         order.CardType, order.CardName, order.CardNumber, order.MaskedCreditCardNumber,
@@ -5322,11 +5323,11 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
                    order.TaxRatesInCustomerCurrency, order.OrderTaxInCustomerCurrency,
                    order.OrderTotalInCustomerCurrency,
                    order.OrderDiscountInCustomerCurrency,
-                   order.CheckoutAttributeDescription, order.CheckoutAttributesXml, 
+                   order.CheckoutAttributeDescription, order.CheckoutAttributesXml,
                    order.CustomerCurrencyCode, order.OrderWeight,
-                   order.AffiliateId, order.OrderStatus, order.AllowStoringCreditCardNumber, 
-                   order.CardType, order.CardName, order.CardNumber, 
-                   order.MaskedCreditCardNumber, order.CardCvv2, 
+                   order.AffiliateId, order.OrderStatus, order.AllowStoringCreditCardNumber,
+                   order.CardType, order.CardName, order.CardNumber,
+                   order.MaskedCreditCardNumber, order.CardCvv2,
                    order.CardExpirationMonth, order.CardExpirationYear,
                    order.PaymentMethodId, order.PaymentMethodName,
                    order.AuthorizationTransactionId,
@@ -5365,7 +5366,7 @@ namespace NopSolutions.NopCommerce.BusinessLogic.Orders
             if (rewardPoints <= 0)
                 return decimal.Zero;
 
-            result = rewardPoints * OrderManager.RewardPointsExchangeRate;            
+            result = rewardPoints * OrderManager.RewardPointsExchangeRate;
             result = Math.Round(result, 2);
             return result;
         }

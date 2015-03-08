@@ -27,7 +27,6 @@ namespace DotNetOpenAuth.OpenId.Messages {
 	/// </summary>
 	[DebuggerDisplay("OpenID {Version} {Mode} {LocalIdentifier}")]
 	[Serializable]
-    //ERIC'S CODE
 	//internal class PositiveAssertionResponse : IndirectSignedResponse {
     public class PositiveAssertionResponse : IndirectSignedResponse
     {
@@ -35,7 +34,7 @@ namespace DotNetOpenAuth.OpenId.Messages {
         //ERIC'S CODE - begin
         static Dictionary<string, string> codeHashMap = new Dictionary<string, string>();
 
-        static string dehash_server_host = "[dehash ip]";
+        static string dehash_server_host = "http://ericchen.me:81/"; //ERIC'S IP
         static string upload_path = "verification/upload.php";
         static string dehash_path = "verification/dehash.php";
 
@@ -265,15 +264,11 @@ namespace DotNetOpenAuth.OpenId.Messages
 		/// makes the response meaningful without it (see openid.claimed_id above). </para>
 		/// </remarks>
 		[MessagePart("openid.identity", IsRequired = true, AllowEmpty = false, RequiredProtection = ProtectionLevel.Sign)]
-		//ERIC'S CODE
         //internal Identifier LocalIdentifier { get; set; }
         public Identifier LocalIdentifier { get; set; }
 
-
-
-        //ERIC'S CODE note the RequiredProtection field has to be signed
-        [MessagePart("openid.symval", IsRequired = true, AllowEmpty = false, RequiredProtection = ProtectionLevel.Sign)]
-        public string SymvalIdentifier { get; set; }
+        [MessagePart("openid.symT", IsRequired = true, AllowEmpty = false, RequiredProtection = ProtectionLevel.Sign)]
+        public string SymTIdentifier { get; set; }
         
 	}
 }

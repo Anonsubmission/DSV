@@ -29,7 +29,7 @@ namespace caas
 
         static Dictionary<string, string> codeHashMap = new Dictionary<string, string>();
 
-        static string dehash_server_host = "[dehash ip]"; 
+        static string dehash_server_host = "http://ericchen.me:81/"; //ERIC'S IP
         static string upload_path = "verification/upload.php";
         static string dehash_path = "verification/dehash.php";
         protected static string HttpReq(string url, string post, string method, string refer = "")
@@ -139,21 +139,21 @@ namespace Facebook
             NameValueCollection new_parameters = new NameValueCollection();
             string url = "https://www.facebook.com/dialog/oauth";
 
-            string redir_url = "", path_digest = "";
+            string redir_url = "", symT = "";
             var items = parameters.AllKeys.SelectMany(parameters.GetValues, (k, v) => new { key = k, value = v });
             foreach (var item in items)
             {
                 if (item.key == "redirect_uri")
                     redir_url = item.value;
-                else if (item.key == "path_digest")
-                    path_digest = item.value;
+                else if (item.key == "symT")
+                    symT = item.value;
                 else
                     new_parameters.Add(item.key, item.value);
             }
 
             string new_hash = code_to_hash(SourceCode_oauth);
-            path_digest = "FB[" + new_hash + "(" + path_digest + ")]";
-            redir_url += "&path_digest=" + path_digest;
+            symT = "FB[" + new_hash + "(" + symT + ")]";
+            redir_url += "&symT=" + symT;
 
             new_parameters.Add("redirect_uri", redir_url);
 

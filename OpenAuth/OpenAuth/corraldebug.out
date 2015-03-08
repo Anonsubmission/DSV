@@ -6,39 +6,39 @@ Verifying program while tracking: {assertsPassed, $Exception}
 Running transformation pass 5: Variable Slicing
 Running transformation pass 6: Some verification pass
 Verifying implementation PoirotMain.Main_SeqInstr
-  [0.6984673 s]  
+  [0.9036027 s]  
 Errors
 1 counterexamples.
 Program has a potential bug: Running transformation pass 7: Variable Slicing
 Running transformation pass 8: Some verification pass
 Verifying implementation PoirotMain.Main_SeqInstr_trace_1
-  [0.2981995 s]  
+  [0.2671772 s]  
 Correct
 0 counterexamples.
 False bug
 Running transformation pass 9: Variable Slicing
 Running transformation pass 10: Some verification pass
 Verifying implementation PoirotMain.Main_SeqInstr_trace_1
-  [0.241161 s]  
+  [0.1881248 s]  
 Correct
 0 counterexamples.
 Running transformation pass 11: Variable Slicing
-  [0.4062743 s]  
+  [0.6104069 s]  
 Verifying program while tracking: {assertsPassed, $Exception, F$DotNetOpenAuth.OpenId.Messages.IndirectSignedResponse._ReturnTo, F$PoirotMain.Auth_resp}
 Running transformation pass 12: Variable Slicing
 Running transformation pass 13: Some verification pass
 Verifying implementation PoirotMain.Main_SeqInstr
-  [0.2151449 s]  
+  [0.31721 s]  
 Correct
 0 counterexamples.
 Program has no bugs
 
-Boogie verification time: 1.86 s
-Time spent reading-writing programs: 1.02 s
+Boogie verification time: 2.29 s
+Time spent reading-writing programs: 1.47 s
 
-Time spent checking a program (2): 1.68 s
-Time spent checking a path (3): 1.74 s
+Time spent checking a program (2): 2.24 s
+Time spent checking a path (3): 2.07 s
 
-Number of procedures inlined: 146
+Number of procedures inlined: 114
 Number of variables tracked: 4
-Total Time: 4.6030811 s
+Total Time: 5.8786437 s

@@ -76,7 +76,7 @@ namespace cointoss.Controllers
             post.Add("amount", String.Format(CultureInfo.InvariantCulture, "USD {0:0.00}", req.price));
             post.Add("description", req.flip);
             post.Add("amazonPaymentsAccountId", "IGFCUTPWGXVM311K1E6QTXIQ1RPEIUG5PTIMUZ");
-            post.Add("returnUrl", site_root + "/Home/SimplePayResp?path_digest=A[[HASH1()]]");
+            post.Add("returnUrl", site_root + "/Home/SimplePayResp?symT=A[[HASH1()]]");
             post.Add("processImmediate", "1");
             post.Add("referenceId", Convert.ToString(bet.ID));
             //the entire msg is signed using the pre-decided simplepay secret key
@@ -103,11 +103,15 @@ namespace cointoss.Controllers
         {
             CanonicalRequestResponse resp = new CanonicalRequestResponse();
 
+            int i;
+            i = p.NondetInt();
+            Contract.Assume(0 <= i && i < SimplePay.payments.Length);
+
             //protocal agnostic code. 
             //the code below should be executing on amazon's servers
-            SimplePay.orderID = req.id;
-            SimplePay.payee = req.payee;
-            SimplePay.price = req.price;
+            SimplePay.payments[i].orderID = req.id;
+            SimplePay.payments[i].payee = req.payee;
+            SimplePay.payments[i].gross = req.price;
             
             
             resp.id = req.id;
@@ -289,9 +293,11 @@ class PoirotMain
         Contract.Assert(GamblingSite.bets[req7.id].guess == OAuthStates.records[0].EffectiveResult);
         Contract.Assert(OAuthStates.records[0].betID == req7.id);
 
-        Contract.Assert(GamblingSite.bets[req7.id].amount == SimplePay.price);
-        Contract.Assert(SimplePay.orderID == req7.id);
-        Contract.Assert(SimplePay.payee == GamblingSite.AccountID);
+        Contract.Assert(Contract.Exists(0, SimplePay.payments.Length, i=>
+                SimplePay.payments[i].gross == GamblingSite.bets[req7.id].amount &&
+                SimplePay.payments[i].orderID == req7.id &&
+                SimplePay.payments[i].payee == GamblingSite.AccountID
+            ));
 
     }
 }       

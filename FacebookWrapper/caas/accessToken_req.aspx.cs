@@ -100,18 +100,13 @@ namespace Facebook
         {
             // Code that runs when a new session is started
 
-            //get the incoming request
-            /*
-            var context = HttpContext.Current;
-            HttpRequest req = context.Request;
-            */
             string url = "https://graph.facebook.com/oauth/access_token";
 
             NameValueCollection query = new NameValueCollection(Request.QueryString);
-            string path_digest = query["path_digest"];
-            query.Remove("path_digest");
+            string symT = query["symT"];
+            query.Remove("symT");
             string hashed_code = oauth_req.code_to_hash(SourceCode_token);
-            path_digest = "FB[" + hashed_code + "((" + path_digest + "))]";
+            symT = "FB[" + hashed_code + "((" + symT + "))]";
 
             string full_uri = url+"?"+ToQueryString(query);
 
@@ -124,47 +119,13 @@ namespace Facebook
                 }
 
                 var parsedQueryString = HttpUtility.ParseQueryString(data);
-                parsedQueryString.Add("path_digest", path_digest);
+                parsedQueryString.Add("symT", symT);
 
                 Response.Write(ToQueryString(parsedQueryString));
 
             }
 
             Response.End();
-
-
-
-            /*
-            NameValueCollection parameters = new NameValueCollection(Request.QueryString);
-            NameValueCollection new_parameters = new NameValueCollection();
-            string url = "https://graph.facebook.com/oauth/access_token";
-
-            string redir_url = "", path_digest = "";
-            var items = parameters.AllKeys.SelectMany(parameters.GetValues, (k, v) => new { key = k, value = v });
-            foreach (var item in items)
-            {
-                if (item.key == "redirect_uri")
-                    redir_url = item.value;
-                else if (item.key == "path_digest")
-                    path_digest = item.value;
-                else
-                    new_parameters.Add(item.key, item.value);
-            }
-            new_parameters.Add("redirect_uri", "http://localhost:38623/accessToken_resp.aspx?redirect_uri=" + HttpUtility.UrlEncode(redir_url) + "&path_digest=" + path_digest);
-
-            Response.StatusCode = 302;
-            Response.Status = "302 Moved Temporarily";
-            Response.RedirectLocation = url + "?";
-
-
-            items = new_parameters.AllKeys.SelectMany(new_parameters.GetValues, (k, v) => new { key = k, value = v });
-            foreach (var item in items)
-            {
-                Response.RedirectLocation += HttpUtility.UrlEncode(item.key) + "=" + HttpUtility.UrlEncode(item.value) + "&";
-
-            }
-            Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            Response.End();*/
         }
     }
 }
